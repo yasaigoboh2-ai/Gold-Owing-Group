@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurant420 | Gold Owing Group</title>
+  <meta name="description" content="Restaurant420｜食で非日常を完成させる。Gold Owing Groupのレストラン。" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body class="page-restaurant">
+  <header class="header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="GOG Home">
+        <img class="brand-logo" src="assets/logo-gog.png" alt="Gold Owing Group" />
+        <span class="brand-text">
+          <span class="brand-title">Gold Owing Group</span>
+          <span class="brand-sub">Bar105 • Club210 • Lounge315 • Restaurant420</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Global navigation">
+        <a href="index.html">GOG</a>
+        <a href="bar105.html">Bar105</a>
+        <a href="club210.html">Club210</a>
+        <a href="lounge315.html">Lounge315</a>
+        <a href="restaurant420.html" aria-current="page">Restaurant420</a>
+        <a href="#news">News</a>
+        <a class="cta" href="#contact">Contact</a>
+      </nav>
+
+      <button class="burger" data-burger aria-expanded="false" aria-label="メニューを開く">MENU</button>
+    </div>
+
+    <div class="drawer" data-drawer aria-hidden="true">
+      <a href="index.html">GOG</a>
+      <a href="bar105.html">Bar105</a>
+      <a href="club210.html">Club210</a>
+      <a href="lounge315.html">Lounge315</a>
+      <a href="restaurant420.html">Restaurant420</a>
+      <a href="#news">News</a>
+      <a href="#access">Access</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <!-- HERO（ロゴは出さない：店舗名だけ / Barと同じ構造） -->
+  <section class="hero">
+    <!-- 背景はCSSで指定（.page-restaurant .hero-visual に restaurant-hero.jpg） -->
+    <div class="hero-visual" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+      <div class="hero-box">
+        <div class="hero-main">
+          <p class="kicker">RESTAURANT / FINE DINING</p>
+          <h1 class="h1"><span class="keep">Restaurant420</span></h1>
+
+          <p class="lead">
+            夜の余韻を、皿の上に。<br>
+            料理・空間・サービスを一つの体験として設計します。
+          </p>
+
+          <div class="actions">
+            <a class="btn primary" href="#menu">MENU</a>
+            <a class="btn ghost" href="#reservation">RESERVATION</a>
+            <a class="btn" href="#access">ACCESS</a>
+          </div>
+        </div>
+
+        <div class="hero-bottom">
+          <div class="scroll" aria-hidden="true">
+            <span>SCROLL DOWN</span><span class="line"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+
+    <section class="section" id="news">
+      <div class="container">
+        <div class="kei-divider" data-animate="fade-up"><span>NEWS</span></div>
+
+        <div class="news-item" data-animate="fade-up">
+          <div class="news-date">2026.02.01</div>
+          <div>
+            <p class="news-title">月替わりのコース</p>
+            <p class="news-text">季節に合わせてコース内容を変え、食体験を更新します。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <div class="kei-divider" data-animate="fade-up"><span>ABOUT</span></div>
+
+        <div class="about-grid">
+          <div class="about-copy" data-animate="fade-up">
+            <p class="about-kicker">RESTAURANT420 CONCEPT</p>
+            <h3 class="about-title">特別な夜の“締め”を、ここで。</h3>
+            <p class="about-text">
+              コース、ワイン、空間。<br>
+              記念日にも、接待にも合う設計で、最高の非日常へ。
+            </p>
+
+            <div class="about-stats">
+              <div class="stat" data-animate="fade-up" style="--d: .08s">
+                <div class="stat-num">7</div>
+                <div class="stat-label">商品数</div>
+              </div>
+              <div class="stat" data-animate="fade-up" style="--d: .16s">
+                <div class="stat-num">3</div>
+                <div class="stat-label">週の開店日</div>
+              </div>
+              <div class="stat" data-animate="fade-up" style="--d: .24s">
+                <div class="stat-num">64000</div>
+                <div class="stat-label">値段の最高値</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-figure">
+            <ol class="timeline" data-animate="line">
+              <li class="tl-item" data-animate="fade-up" style="--d: .00s">
+                <div class="tl-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M6 3h12v6H6z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M8 9v12M16 9v12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    <path d="M10 21h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="tl-body">
+                  <div class="tl-title">COURSE</div>
+                  <div class="tl-text">流れのある構成で、食体験の完成度を上げる。</div>
+                </div>
+              </li>
+
+              <li class="tl-item" data-animate="fade-up" style="--d: .08s">
+                <div class="tl-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M7 2h10v7a5 5 0 01-10 0V2z" stroke="currentColor" stroke-width="1.6"/>
+                    <path d="M9 22h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <div class="tl-body">
+                  <div class="tl-title">PAIRING</div>
+                  <div class="tl-text">食事とドリンクの提案で、余韻まで設計。</div>
+                </div>
+              </li>
+
+              <li class="tl-item" data-animate="fade-up" style="--d: .16s">
+                <div class="tl-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M4 18h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                    <path d="M6 18V8a6 6 0 0112 0v10" stroke="currentColor" stroke-width="1.6"/>
+                  </svg>
+                </div>
+                <div class="tl-body">
+                  <div class="tl-title">SPACE</div>
+                  <div class="tl-text">静かな空間で、食事の時間を特別に。</div>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="menu">
+      <div class="container">
+        <div class="kei-divider" data-animate="fade-up"><span>MENU</span></div>
+
+        <div class="block" data-animate="fade-up">
+          <div class="label">COURSE</div>
+          <div class="content">
+            <h3>コース・アラカルト</h3>
+            <p>・各アイテム5個ずつ（料理の説明付き）、アラカルト販売も行っております</p>
+          </div>
+        </div>
+
+        <div class="block" data-animate="fade-up" style="--d:.08s;">
+          <div class="label">DRINK</div>
+          <div class="content">
+            <h3>ドリンク</h3>
+            <p>ワイン / シャンパン / ノンアル。おすすめは店頭で。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="reservation">
+      <div class="container">
+        <div class="kei-divider" data-animate="fade-up"><span>RESERVATION</span></div>
+
+        <div class="block" data-animate="fade-up">
+          <div class="label">FORM</div>
+          <div class="content">
+            <h3>ご予約</h3>
+            <p>予約フォームから、必要事項を記載してください。</p>
+            <div class="actions" style="margin-top:12px;">
+              <button class="btn primary" type="button" data-open-reservation>予約する</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="access">
+      <div class="container">
+        <div class="kei-divider" data-animate="fade-up"><span>ACCESS</span></div>
+
+        <div class="block" data-animate="fade-up">
+          <div class="label">LOCATION</div>
+          <div class="content">
+            <h3>Restaurant420</h3>
+            <p>
+              ・住所：<strong>545番地</strong><br>
+              ・営業時間：<strong>21時～</strong><br>
+              ・ドレスコード：<strong>セミフォーマル</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="kei-divider" data-animate="fade-up"><span>CONTACT</span></div>
+
+        <div class="block" data-animate="fade-up">
+          <div class="label">DISCORD</div>
+          <div class="content">
+            <h3>【窓口】企業Discordに偏移します。</h3>
+            <div class="actions" style="margin-top:12px;">
+              <a class="btn primary" href="https://discord.gg/tVVu4q3xNs" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
+              <a class="btn ghost" href="index.html">homeへ戻る</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img class="footer-logo" src="assets/logo-gog.png" alt="Gold Owing Group" />
+        <div>
+          <div style="font-weight:700; letter-spacing:.08em;">Gold Owing Group</div>
+          <div class="small">© <span data-year></span> Gold Owing Group.</div>
+        </div>
+      </div>
+      <div class="links">
+        <a href="index.html">GOG</a>
+        <a href="bar105.html">Bar105</a>
+        <a href="club210.html">Club210</a>
+        <a href="lounge315.html">Lounge315</a>
+        <a href="restaurant420.html">Restaurant420</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Reservation Modal（body内・最後に配置） -->
+  <div class="modal" data-reservation-modal aria-hidden="true">
+    <div class="modal-backdrop" data-close-reservation></div>
+
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-label="予約フォーム">
+      <div class="modal-head">
+        <div class="modal-title">予約フォーム</div>
+        <button class="modal-x" type="button" aria-label="閉じる" data-close-reservation>×</button>
+      </div>
+
+      <form class="modal-form" data-reservation-form>
+        <label class="field">
+          <span>お名前</span>
+          <input name="name" type="text" required placeholder="例）かたくら" />
+        </label>
+
+        <label class="field">
+          <span>連絡先（Discord名など）</span>
+          <input name="contact" type="text" required placeholder="例）katakura#0000" />
+        </label>
+
+        <label class="field">
+          <span>希望日時</span>
+          <input name="datetime" type="text" required placeholder="例）2/10 22:00〜" />
+        </label>
+
+        <label class="field">
+          <span>人数</span>
+          <input name="people" type="number" min="1" required placeholder="例）2" />
+        </label>
+
+        <label class="field">
+          <span>要望</span>
+          <textarea name="note" rows="4" placeholder="アレルギー / 席の希望など"></textarea>
+        </label>
+
+        <div class="modal-actions">
+          <button class="btn ghost" type="button" data-close-reservation>キャンセル</button>
+          <button class="btn primary" type="submit">送信する</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
