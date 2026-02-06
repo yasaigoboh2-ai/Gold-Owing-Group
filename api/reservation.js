@@ -1,67 +1,73 @@
-module.exports = async (req, res) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+// api/reservation.js
 
-  if (req.method === "OPTIONS") return res.status(204).end();
+function sendJson(res, status, data) {
+  res.statusCode = status;
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.end(JSON.stringify(data));
+}
+
+module.exports = async (req, res) => {
+  // GETで叩かれた時（ブラウザ直アクセス）は405でOK
   if (req.method !== "POST") {
-    return res.status(405).json({ ok: false, message: "Method Not Allowed" });
+    res.setHeader("Allow", "POST");
+    return sendJson(res, 405, { ok: false, message: "Method Not Allowed" });
   }
 
   try {
-    const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
-    if (!webhookUrl) {
-      return res.status(500).json({ ok: false, message: "DISCORD_WEBHOOK_URL is not set" });
+    const webhook = process.env.DISCORD_WEBHOOK_URL;
+    if (!webhook) {
+      console.error("DISCORD_WEBHOOK_URL is missing");
+      return sendJson(res, 500, { ok: false, message: "Webhook not set" });
     }
 
-    const body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {});
-    const name = String(body.name || "").trim();
-    const contact = String(body.contact || "").trim();
-    const datetime = String(body.datetime || "").trim();
+    // body は object の時も string の時もあるので両対応
+    const body =
+      typeof req.body === "string"
+        ? JSON.parse(req.body || "{}")
+        : (req.body || {});
+
+    const name = (body.name || "").toString().trim();
+    const contact = (body.contact || "").toString().trim();
+    const datetime = (body.datetime || "").toString().trim();
     const people = Number(body.people || 0);
-    const note = String(body.note || "").trim();
-    const page = String(body.page || "Restaurant420").trim();
+    const note = (body.note || "").toString().trim();
+    const page = (body.page || "Restaurant420").toString().trim();
 
-    if (!name || !contact || !datetime || !people || people < 1) {
-      return res.status(400).json({ ok: false, message: "Missing required fields" });
+    if (!name || !contact || !datetime || !people) {
+      return sendJson(res, 400, { ok: false, message: "Bad Request" });
     }
 
-    const safe = (s) => String(s).replace(/@/g, "＠").slice(0, 500);
+    const content = [
+      "🍽️ **予約フォーム通知**",
+      `店舗: **${page}**`,
+      `お名前: **${name}**`,
+      `連絡先: **${contact}**`,
+      `希望日時: **${datetime}**`,
+      `人数: **${people}**`,
+      `要望: ${note ? note : "（なし）"}`,
+      `送信元: ${req.headers.referer || "unknown"}`,
+    ].join("\n");
 
-    const payload = {
-      username: "Reservation Bot",
-      allowed_mentions: { parse: [] },
-      embeds: [
-        {
-          title: "🍽️ 新しい予約が入りました",
-          color: 0xd9b46a,
-          fields: [
-            { name: "店舗", value: safe(page), inline: true },
-            { name: "人数", value: String(people), inline: true },
-            { name: "希望日時", value: safe(datetime), inline: false },
-            { name: "お名前", value: safe(name), inline: true },
-            { name: "連絡先", value: safe(contact), inline: true },
-            { name: "要望", value: note ? safe(note) : "（なし）", inline: false },
-          ],
-          timestamp: new Date().toISOString(),
-        },
-      ],
-    };
-
-    const r = await fetch(webhookUrl, {
+    const discordRes = await fetch(webhook, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ content }),
     });
 
-    if (!r.ok) {
-      const txt = await r.text().catch(() => "");
-      return res.status(502).json({ ok: false, message: "Discord webhook failed", detail: txt });
+    const discordText = await discordRes.text(); // エラー時に内容確認できるよう読む
+
+    if (!discordRes.ok) {
+      console.error("Discord webhook failed:", discordRes.status, discordText);
+      return sendJson(res, 502, {
+        ok: false,
+        message: "Discord webhook failed",
+        status: discordRes.status,
+      });
     }
 
-    return res.status(200).json({ ok: true });
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ ok: false, message: "Server error" });
+    return sendJson(res, 200, { ok: true });
+  } catch (err) {
+    console.error("Reservation API error:", err);
+    return sendJson(res, 500, { ok: false, message: "Internal Server Error" });
   }
 };
