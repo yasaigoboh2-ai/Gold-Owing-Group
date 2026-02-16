@@ -99,26 +99,31 @@ document.querySelectorAll("[data-year]").forEach((el) => {
     }
   });
 
+  // 店舗名（Webhook振り分け用）
+  const resolvePageName = () => {
+    // ✅ 最優先：<body data-page="WEDDING525"> みたいに決め打ち
+    if (document.body?.dataset?.page) return document.body.dataset.page;
+
+    // 次点：クラス判定（保険）
+    if (document.body.classList.contains("page-restaurant")) return "Restaurant420";
+    if (document.body.classList.contains("page-wedding")) return "WEDDING525";
+
+    // 最後：title
+    return document.title || "GOG";
+  };
+
   // submit -> your API
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const fd = new FormData(form);
-
-    const pageName =
-      document.body.classList.contains("page-restaurant")
-        ? "Restaurant420"
-        : document.body.classList.contains("page-wedding")
-        ? "WEDDING525"
-        : document.title || "GOG";
-
     const payload = {
       name: (fd.get("name") || "").toString().trim(),
       contact: (fd.get("contact") || "").toString().trim(),
       datetime: (fd.get("datetime") || "").toString().trim(),
       people: Number(fd.get("people") || 0),
       note: (fd.get("note") || "").toString().trim(),
-      page: pageName,
+      page: resolvePageName(),
     };
 
     // 必須チェック
@@ -134,9 +139,17 @@ document.querySelectorAll("[data-year]").forEach((el) => {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("Reservation API error");
+      // 失敗時：APIのメッセージも拾う
+      if (!res.ok) {
+        let detail = "";
+        try {
+          const j = await res.json();
+          detail = j?.message ? `\n\n${j.message}` : "";
+        } catch {}
+        throw new Error(`Reservation API error (${res.status})${detail}`);
+      }
 
-      alert("予約を送信しました！");
+      alert("送信しました！");
       form.reset();
       closeModal();
     } catch (err) {
