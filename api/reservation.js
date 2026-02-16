@@ -4,12 +4,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, message: "Method Not Allowed" });
   }
 
-  const webhook = process.env.DISCORD_WEBHOOK_URL;
-  if (!webhook) {
-    console.error("DISCORD_WEBHOOK_URL is missing");
-    return res.status(500).json({ ok: false, message: "DISCORD_WEBHOOK_URL is missing" });
-  }
-
   try {
     // ✅ body を確実に読む（req.body が無い環境でもOK）
     let body = req.body;
@@ -19,6 +13,8 @@ export default async function handler(req, res) {
       for await (const chunk of req) chunks.push(chunk);
       const raw = Buffer.concat(chunks).toString("utf8");
       body = raw ? JSON.parse(raw) : {};
+    } else if (typeof body === "string") {
+      body = body ? JSON.parse(body) : {};
     }
 
     const name = (body.name || "").toString().trim();
@@ -26,11 +22,26 @@ export default async function handler(req, res) {
     const datetime = (body.datetime || "").toString().trim();
     const people = Number(body.people || 0);
     const note = (body.note || "").toString().trim();
-    const page = (body.page || "").toString().trim();
+    const page = (body.page || "").toString().trim(); // "Restaurant420" / "WEDDING525" 想定
 
     // 最低限バリデーション
     if (!name || !contact || !datetime || !people) {
       return res.status(400).json({ ok: false, message: "必須項目が不足しています" });
+    }
+
+    // ✅ 店舗ごとにWebhookを分ける
+    const webhookMap = {
+      Restaurant420: process.env.DISCORD_WEBHOOK_URL_RESTAURANT,
+      WEDDING525: process.env.DISCORD_WEBHOOK_URL_WEDDING,
+    };
+
+    const webhook =
+      webhookMap[page] ||
+      process.env.DISCORD_WEBHOOK_URL; // 予備（共通）を残すなら
+
+    if (!webhook) {
+      console.error("Discord webhook env is missing");
+      return res.status(500).json({ ok: false, message: "Discord webhook env is missing" });
     }
 
     const payload = {
@@ -56,7 +67,9 @@ export default async function handler(req, res) {
       body: JSON.stringify(payload),
     });
 
-    const text = await r.text(); // Discordは204で空のこと多い
+    // Discordは204で空のこと多い
+    const text = await r.text().catch(() => "");
+
     if (!r.ok) {
       console.error("Discord webhook failed:", r.status, text);
       return res.status(502).json({
