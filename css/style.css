@@ -270,6 +270,9 @@ section{ scroll-margin-top: calc(var(--header-h) + 14px); }
 .page-restaurant .hero-visual{ background-image: url("../assets/restaurant-hero.jpg"); }
 /* ✅ WEDDING525 */
 .page-wedding .hero-visual{ background-image: url("../assets/wedding525-hero.png"); }
+/* ✅ Dear.630 / Silent735 */
+.page-dear630 .hero-visual{ background-image: url("../assets/hero-dear630.png"); }
+.page-silent735 .hero-visual{ background-image: url("../assets/hero-silent735.jpg"); }
 
 /* ===== Sections ===== */
 .section{
@@ -721,13 +724,17 @@ section{ scroll-margin-top: calc(var(--header-h) + 14px); }
 }
 
 /* Responsive */
+/* 店舗数増加（7店舗）でnavが横に長くなったため、brand-subはnav表示時点(920px超)でも
+   1300px未満では折り返してnavと衝突するので非表示にする */
+@media (max-width: 1400px){
+  .brand-sub{ display:none; }
+}
 @media (max-width: 920px){
   .nav{ display:none; }
   .burger{ display:inline-flex; }
   .drawer{ display:none; }
   .block{ grid-template-columns: 1fr; }
   .news-item{ grid-template-columns: 1fr; }
-  .brand-sub{ display:none; }
   .about-grid{ grid-template-columns: 1fr; }
 }
 
