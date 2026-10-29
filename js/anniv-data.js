@@ -11,7 +11,7 @@ window.GOG_ANNIV = {
     // 投票の受付（Supabase Edge Function）
     api: "https://wacmbwlypznivloopsaq.supabase.co/functions/v1/anniv-vote",
     // Discord アプリの Client ID（公開してよい値）。Edge Function の DISCORD_CLIENT_ID と同じにする
-    discordClientId: "",
+    discordClientId: "1565500993578336306",
     start: "2026-11-01T00:00:00+09:00",
     end: "2026-11-08T00:00:00+09:00", // 11月7日 23:59 まで
     resale: "11月9日〜30日",

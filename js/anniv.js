@@ -6,10 +6,14 @@
 
   const params = new URLSearchParams(location.search);
   const sample = params.has("sample");
-  const candidates = sample ? window.GOG_ANNIV_SAMPLE || [] : cfg.candidates || [];
-  const logos = window.GOG_ANNIV.storeLogos || {};
-  const VOTED_KEY = "gog_anniv_vote_2026";
   const PENDING_KEY = "gog_anniv_vote_pending";
+  // ?test=1：見本の候補で、本物のDiscord確認〜送信まで試す（受け付けるかはサーバーが決める）
+  let pendingTest = false;
+  try { pendingTest = params.has("code") && !!JSON.parse(sessionStorage.getItem(PENDING_KEY) || "null")?.test; } catch {}
+  const test = params.has("test") || pendingTest;
+  const candidates = sample || test ? window.GOG_ANNIV_SAMPLE || [] : cfg.candidates || [];
+  const logos = window.GOG_ANNIV.storeLogos || {};
+  const VOTED_KEY = test ? "gog_anniv_vote_test" : "gog_anniv_vote_2026";
   const API = cfg.api || "/api/vote";
   // Discordから戻ってくるURL（Discordのアプリ設定にも同じものを登録する）
   const REDIRECT_URI = location.origin + location.pathname.replace(/index\.html$/, "");
@@ -19,6 +23,7 @@
   const phaseNow = () => {
     const forced = params.get("phase");
     if (sample && ["before", "open", "closed"].includes(forced)) return forced;
+    if (test) return "open";
     const now = Date.now();
     return now < start ? "before" : now < end ? "open" : "closed";
   };
@@ -198,7 +203,7 @@
     }
 
     const st = randomState();
-    pending.set({ state: st, picks, at: Date.now() });
+    pending.set({ state: st, picks, at: Date.now(), test });
     const q = new URLSearchParams({
       response_type: "code",
       client_id: cfg.discordClientId,

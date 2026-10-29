@@ -14,7 +14,7 @@ const VOTE_END = Date.parse("2026-11-08T00:00:00+09:00"); // 11/7 23:59 まで
 const FORCE_OPEN = false; // 動作テストのときだけ true にしてデプロイ
 
 // Discord アプリの Client ID（公開してよい値）。js/anniv-data.js と同じにする
-const DISCORD_CLIENT_ID = "";
+const DISCORD_CLIENT_ID = "1565500993578336306";
 // 投票直前に作った捨てアカウントを防ぐ：この日時より後に作られたDiscordアカウントは投票不可
 const ACCOUNT_CREATED_BEFORE = Date.parse("2026-10-25T00:00:00+09:00");
 // Discordの認可画面から戻ってくるHPのURL（Discord側にも同じものを登録する）
