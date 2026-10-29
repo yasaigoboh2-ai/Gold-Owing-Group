@@ -220,7 +220,12 @@ body.modal-open{ overflow:hidden; }
 .page-bar .hero-visual{ background-image:url("../assets/hero-bar.webp"); }
 .page-club .hero-visual{ background-image:url("../assets/hero-club.webp"); }
 .page-lounge .hero-visual{ background-image:url("../assets/hero-lounge.webp"); }
-.page-restaurant .hero-visual{ background-image:url("../assets/restaurant-hero.webp"); }
+.page-restaurant .hero-visual{ background-image:url("../assets/restaurant-hero.webp"); background-position:58% 60%; }
+.page-restaurant .hero-visual::before{
+  background:
+    linear-gradient(180deg, rgba(12,9,7,.5) 0%, rgba(12,9,7,.12) 40%, rgba(12,9,7,.45) 82%, var(--ink) 100%),
+    radial-gradient(55% 65% at 12% 48%, rgba(12,9,7,.72), transparent 72%);
+}
 .page-wedding .hero-visual{ background-image:url("../assets/wedding525-hero.webp"); }
 .page-dear630 .hero-visual{ background-image:url("../assets/hero-dear630.webp"); }
 .page-silent735 .hero-visual{ background-image:url("../assets/hero-silent735.webp"); }
