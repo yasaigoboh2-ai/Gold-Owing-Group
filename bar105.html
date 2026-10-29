@@ -8,50 +8,64 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Shippori+Mincho+B1:wght@400;500;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body class="page-bar">
   <header class="header">
+    <div class="strip">
+      <p><span class="strip-long">Gold Owing Group は2026年11月30日をもって活動を終了します。最後の1か月は1周年企画をお楽しみください。</span><span class="strip-short">GOGは11月30日をもって活動を終了します</span></p>
+      <a href="index.html#notice">お知らせを読む</a>
+    </div>
     <div class="header-inner">
-      <a class="brand" href="index.html" aria-label="GOG Home">
-        <img class="brand-logo" src="assets/logo-gog.png" alt="Gold Owing Group" />
-        <span class="brand-text">
-          <span class="brand-title">Gold Owing Group</span>
-          <span class="brand-sub">Bar105 • Club210 • Lounge315 • Restaurant420 • WEDDING525 • Dear.630 • Silent735</span>
-        </span>
+      <a class="brand" href="index.html" aria-label="Gold Owing Group トップへ">
+        <img class="brand-logo" src="assets/logo-gog.webp" alt="" width="38" height="38" />
+        <span class="brand-title">Gold Owing Group</span>
       </a>
 
-      <nav class="nav" aria-label="Global navigation">
-        <a href="index.html">GOG</a>
-        <a href="bar105.html" aria-current="page">Bar105</a>
-        <a href="club210.html">Club210</a>
-        <a href="lounge315.html">Lounge315</a>
-        <a href="restaurant420.html">Restaurant420</a>
-        <a href="wedding525.html">WEDDING525</a>
-        <a href="dear630.html">Dear.630</a>
-        <a href="silent735.html">Silent735</a>
-        <a href="#news">News</a>
-        <a class="cta" href="#contact">Contact</a>
+      <nav class="nav" aria-label="メインメニュー">
+        <a href="index.html#vote">人気投票</a>
+        <a href="index.html#arrivals">新商品</a>
+        <a href="index.html#fes">GOGフェス</a>
+        <details class="nav-stores" data-nav-stores>
+          <summary>店舗</summary>
+          <div class="nav-stores-panel">
+            <a href="bar105.html" aria-current="page"><img src="assets/logo-bar105.webp" alt="" width="30" height="30" />Bar105</a>
+            <a href="club210.html"><img src="assets/logo-club210.webp" alt="" width="30" height="30" />Club210</a>
+            <a href="lounge315.html"><img src="assets/logo-lounge315.webp" alt="" width="30" height="30" />Lounge315</a>
+            <a href="restaurant420.html"><img src="assets/logo-restaurant420.webp" alt="" width="30" height="30" />Restaurant420</a>
+            <a href="wedding525.html"><img src="assets/wedding525-logo.webp" alt="" width="30" height="30" />WEDDING525</a>
+            <a href="dear630.html"><img src="assets/logo-dear630.webp" alt="" width="30" height="30" />Dear.630</a>
+            <a href="silent735.html"><img src="assets/logo-silent735.webp" alt="" width="30" height="30" style="filter:invert(1)" />Silent735</a>
+            <a href="military840.html"><img src="assets/logo-military840.webp" alt="" width="30" height="30" />Military840</a>
+          </div>
+        </details>
+        <a href="index.html#notice">お知らせ</a>
+        <a class="cta" href="index.html#contact">お問い合わせ</a>
       </nav>
 
-      <button class="burger" data-burger aria-expanded="false" aria-label="メニューを開く">MENU</button>
+      <button class="burger" type="button" data-burger aria-expanded="false" aria-controls="drawer">メニュー</button>
     </div>
 
-    <div class="drawer" data-drawer aria-hidden="true">
-      <a href="index.html">GOG</a>
-      <a href="bar105.html">Bar105</a>
-      <a href="club210.html">Club210</a>
-      <a href="lounge315.html">Lounge315</a>
-      <a href="restaurant420.html">Restaurant420</a>
-      <a href="wedding525.html">WEDDING525</a>
-      <a href="dear630.html">Dear.630</a>
-      <a href="silent735.html">Silent735</a>
-      <a href="#news">News</a>
-      <a href="#contact">Contact</a>
-    </div>
+    <nav class="drawer" id="drawer" data-drawer aria-label="メニュー">
+      <a href="index.html">トップ</a>
+      <a href="index.html#notice">活動終了のお知らせ</a>
+      <a href="index.html#vote">人気投票</a>
+      <a href="index.html#arrivals">1周年の新商品</a>
+      <a href="index.html#fes">GOGフェス</a>
+      <p class="drawer-group">店舗</p>
+      <a class="drawer-store" href="bar105.html" aria-current="page">Bar105</a>
+      <a class="drawer-store" href="club210.html">Club210</a>
+      <a class="drawer-store" href="lounge315.html">Lounge315</a>
+      <a class="drawer-store" href="restaurant420.html">Restaurant420</a>
+      <a class="drawer-store" href="wedding525.html">WEDDING525</a>
+      <a class="drawer-store" href="dear630.html">Dear.630</a>
+      <a class="drawer-store" href="silent735.html">Silent735</a>
+      <a class="drawer-store" href="military840.html">Military840</a>
+      <a href="index.html#contact">お問い合わせ</a>
+    </nav>
   </header>
 
   <!-- HERO（ロゴは出さない：店舗名だけ） -->
@@ -89,20 +103,25 @@
     <section class="section" id="news">
       <div class="container">
         <div class="kei-divider" data-animate="fade-up"><span>NEWS</span></div>
-
         <div class="news-item" data-animate="fade-up">
-          <div class="news-date">2026.02.06</div>
+          <div class="news-date">2026.10.30</div>
           <div>
-            <p class="news-title">スタンプラリー実施中</p>
-            <p class="news-text">ご来店・ご購入後にスタンプ付与。コンプリートで報酬へ。</p>
+            <p class="news-title">1周年記念メニュー</p>
+            <p class="news-text">ロイヤル・クラウンとロイヤル・アニバーサリーティーを11月末まで販売します。<a href="index.html#arrivals">詳しく見る</a></p>
           </div>
         </div>
-
         <div class="news-item" data-animate="fade-up" style="--d:.08s;">
-          <div class="news-date">2026.02.01</div>
+          <div class="news-date">2026.10.30</div>
           <div>
-            <p class="news-title">コラボ商品販売中</p>
-            <p class="news-text">和食フェア開催中。詳細は店頭・告知で。</p>
+            <p class="news-title">GOGフェス ピックアップガチャ</p>
+            <p class="news-text">11月1日から、ガチャ台に和傘と舞扇が当たる特別ピックアップが登場します。<a href="index.html#fes">詳しく見る</a></p>
+          </div>
+        </div>
+        <div class="news-item" data-animate="fade-up" style="--d:.16s;">
+          <div class="news-date">2026.10.15</div>
+          <div>
+            <p class="news-title">GOG 活動終了のお知らせ</p>
+            <p class="news-text">Gold Owing Groupは2026年11月30日をもって活動を終了します。<a href="index.html#notice">お知らせを読む</a></p>
           </div>
         </div>
       </div>
@@ -245,10 +264,10 @@
         <div class="block" data-animate="fade-up">
           <div class="label">DISCORD</div>
           <div class="content">
-  <h3>【窓口】企業Discordに偏移します。</h3>
+  <h3>【窓口】企業Discordに遷移します。</h3>
             <div class="actions" style="margin-top:12px;">
 <a class="btn primary" href="https://discord.gg/tVVu4q3xNs" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
-              <a class="btn ghost" href="index.html">homeへ戻る</a>
+              <a class="btn ghost" href="index.html">トップへ戻る</a>
             </div>
           </div>
         </div>
@@ -260,14 +279,13 @@
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
-        <img class="footer-logo" src="assets/logo-gog.png" alt="Gold Owing Group" />
+        <img class="footer-logo" src="assets/logo-gog.webp" alt="" width="44" height="44" />
         <div>
-          <div style="font-weight:700; letter-spacing:.08em;">Gold Owing Group</div>
-          <div class="small">© <span data-year></span> Gold Owing Group.</div>
+          <div class="footer-name">Gold Owing Group</div>
+          <div class="small">© <span data-year>2026</span> Gold Owing Group</div>
         </div>
       </div>
-      <div class="links">
-        <a href="index.html">GOG</a>
+      <nav class="links" aria-label="店舗">
         <a href="bar105.html">Bar105</a>
         <a href="club210.html">Club210</a>
         <a href="lounge315.html">Lounge315</a>
@@ -275,10 +293,11 @@
         <a href="wedding525.html">WEDDING525</a>
         <a href="dear630.html">Dear.630</a>
         <a href="silent735.html">Silent735</a>
-      </div>
+        <a href="military840.html">Military840</a>
+      </nav>
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js" defer></script>
 </body>
 </html>

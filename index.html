@@ -3,373 +3,490 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gold Owing Group | GOG</title>
-  <meta name="description" content="Gold Owing Group（GOG）公式サイト。Bar105 / Club210 / Lounge315 / Restaurant420 / WEDDING525 / Dear.630 / Silent735 の7店舗で夜の体験を設計します。" />
+  <title>Gold Owing Group 1st Anniversary | GOG</title>
+  <meta name="description" content="Gold Owing Group（GOG）1周年。人気投票、1周年の新商品、GOGフェス。GOGは2026年11月30日をもって活動を終了します。" />
+  <meta name="theme-color" content="#0c0907" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Shippori+Mincho+B1:wght@400;500;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="page-home">
 
+  <!-- HEADER -->
   <header class="header">
+    <div class="strip">
+      <p><span class="strip-long">Gold Owing Group は2026年11月30日をもって活動を終了します。最後の1か月は1周年企画をお楽しみください。</span><span class="strip-short">GOGは11月30日をもって活動を終了します</span></p>
+      <a href="index.html#notice">お知らせを読む</a>
+    </div>
     <div class="header-inner">
-      <a class="brand" href="index.html" aria-label="GOG Home">
-        <img class="brand-logo" src="assets/logo-gog.png" alt="Gold Owing Group" />
-        <span class="brand-text">
-          <span class="brand-title">Gold Owing Group</span>
-          <span class="brand-sub">Bar105 • Club210 • Lounge315 • Restaurant420 • WEDDING525 • Dear.630 • Silent735</span>
-        </span>
+      <a class="brand" href="index.html" aria-label="Gold Owing Group トップへ">
+        <img class="brand-logo" src="assets/logo-gog.webp" alt="" width="38" height="38" />
+        <span class="brand-title">Gold Owing Group</span>
       </a>
 
-      <nav class="nav" aria-label="Global navigation">
-        <a href="index.html" aria-current="page">GOG</a>
-        <a href="bar105.html">Bar105</a>
-        <a href="club210.html">Club210</a>
-        <a href="lounge315.html">Lounge315</a>
-        <a href="restaurant420.html">Restaurant420</a>
-        <a href="wedding525.html">WEDDING525</a>
-        <a href="dear630.html">Dear.630</a>
-        <a href="silent735.html">Silent735</a>
-        <a href="#news">News</a>
-        <a class="cta" href="#contact">Contact</a>
+      <nav class="nav" aria-label="メインメニュー">
+        <a href="index.html#vote">人気投票</a>
+        <a href="index.html#arrivals">新商品</a>
+        <a href="index.html#fes">GOGフェス</a>
+        <details class="nav-stores" data-nav-stores>
+          <summary>店舗</summary>
+          <div class="nav-stores-panel">
+            <a href="bar105.html"><img src="assets/logo-bar105.webp" alt="" width="30" height="30" />Bar105</a>
+            <a href="club210.html"><img src="assets/logo-club210.webp" alt="" width="30" height="30" />Club210</a>
+            <a href="lounge315.html"><img src="assets/logo-lounge315.webp" alt="" width="30" height="30" />Lounge315</a>
+            <a href="restaurant420.html"><img src="assets/logo-restaurant420.webp" alt="" width="30" height="30" />Restaurant420</a>
+            <a href="wedding525.html"><img src="assets/wedding525-logo.webp" alt="" width="30" height="30" />WEDDING525</a>
+            <a href="dear630.html"><img src="assets/logo-dear630.webp" alt="" width="30" height="30" />Dear.630</a>
+            <a href="silent735.html"><img src="assets/logo-silent735.webp" alt="" width="30" height="30" style="filter:invert(1)" />Silent735</a>
+            <a href="military840.html"><img src="assets/logo-military840.webp" alt="" width="30" height="30" />Military840</a>
+          </div>
+        </details>
+        <a href="index.html#notice">お知らせ</a>
+        <a class="cta" href="index.html#contact">お問い合わせ</a>
       </nav>
 
-      <button class="burger" data-burger aria-expanded="false" aria-label="メニューを開く">MENU</button>
+      <button class="burger" type="button" data-burger aria-expanded="false" aria-controls="drawer">メニュー</button>
     </div>
 
-    <div class="drawer" data-drawer aria-hidden="true">
-      <a href="index.html">GOG</a>
-      <a href="bar105.html">Bar105</a>
-      <a href="club210.html">Club210</a>
-      <a href="lounge315.html">Lounge315</a>
-      <a href="restaurant420.html">Restaurant420</a>
-      <a href="wedding525.html">WEDDING525</a>
-      <a href="dear630.html">Dear.630</a>
-      <a href="silent735.html">Silent735</a>
-      <a href="#news">News</a>
-      <a href="#contact">Contact</a>
-    </div>
+    <nav class="drawer" id="drawer" data-drawer aria-label="メニュー">
+      <a href="index.html">トップ</a>
+      <a href="index.html#notice">活動終了のお知らせ</a>
+      <a href="index.html#vote">人気投票</a>
+      <a href="index.html#arrivals">1周年の新商品</a>
+      <a href="index.html#fes">GOGフェス</a>
+      <p class="drawer-group">店舗</p>
+      <a class="drawer-store" href="bar105.html">Bar105</a>
+      <a class="drawer-store" href="club210.html">Club210</a>
+      <a class="drawer-store" href="lounge315.html">Lounge315</a>
+      <a class="drawer-store" href="restaurant420.html">Restaurant420</a>
+      <a class="drawer-store" href="wedding525.html">WEDDING525</a>
+      <a class="drawer-store" href="dear630.html">Dear.630</a>
+      <a class="drawer-store" href="silent735.html">Silent735</a>
+      <a class="drawer-store" href="military840.html">Military840</a>
+      <a href="index.html#contact">お問い合わせ</a>
+    </nav>
   </header>
+  <!-- /HEADER -->
 
-  <section class="hero">
+  <section class="hero hero--anniv" aria-labelledby="anniv-title">
     <div class="hero-visual" aria-hidden="true"></div>
-
     <div class="hero-inner">
-      <div class="hero-box">
-        <div class="hero-main">
-          <p class="kicker">GOLD OWING GROUP</p>
-
-          <h1 class="h1">最高の非日常を<br><span class="keep">あなたの居場所に</span></h1>
-
-          <p class="lead">
-            Bar105 / Club210 / Lounge315 / Restaurant420 / WEDDING525 / Dear.630 / Silent735<br />
-            7つの店舗で、街の夜をアップデートするグループです。
-          </p>
-        </div>
-
-        <div class="hero-bottom">
-          <div class="scroll" aria-hidden="true">
-            <span>SCROLL DOWN</span><span class="line"></span>
-          </div>
-
-          <div class="actions hero-actions">
-            <a class="btn primary" href="#venues">店舗を見る</a>
-            <a class="btn ghost" href="#news">最新情報</a>
-          </div>
+      <div class="anniv">
+        <img class="anniv-seal" src="assets/logo-gog.webp" alt="" width="68" height="68" />
+        <p class="anniv-group">Gold Owing Group</p>
+        <p class="anniv-mark" aria-label="1st Anniversary">
+          <span class="anniv-num foil" aria-hidden="true">1<sup>st</sup></span>
+          <span class="anniv-word foil" aria-hidden="true">Anniversary</span>
+        </p>
+        <div class="anniv-rule" aria-hidden="true"><i></i></div>
+        <h1 class="anniv-title" id="anniv-title">一年分の夜に、ありがとう。</h1>
+        <p class="anniv-lead">8つの店舗で過ごしてくれた、すべての夜に感謝を込めて。<br>最後の1か月、1周年の特別企画をお届けします。</p>
+        <div class="actions">
+          <a class="btn primary" href="#vote">1周年企画を見る</a>
+          <a class="btn ghost" href="#notice">活動終了のお知らせ</a>
         </div>
       </div>
+      <p class="anniv-years">2025–2026</p>
     </div>
   </section>
 
   <main>
 
-    <!-- NEWS -->
-    <section class="section" id="news">
-      <div class="container">
-
-        <div class="kei-divider" data-animate="fade-up">
-          <span>NEWS</span>
+    <!-- 活動終了のお知らせ -->
+    <section class="section" id="notice">
+      <div class="container notice-grid">
+        <div class="notice-body">
+          <p class="sec-en">Notice</p>
+          <h2>活動終了のお知らせ</h2>
+          <p>Gold Owing Group（GOG）は、2026年11月30日をもちまして、グループとしての活動を終了いたします。</p>
+          <p>これまでGOGの店舗に足を運んでくださったお客様、そして一緒に夜をつくってくれた店員のみなさまに、心より感謝申し上げます。</p>
+          <p>最後の日まで、1周年企画とともに各店舗で営業いたします。どうぞ最後まで、GOGの夜をお楽しみください。</p>
         </div>
 
-        <div class="news-item" data-animate="fade-up">
-          <div class="news-date">2026.02.06</div>
-          <div>
-            <p class="news-title">夜歩きスタンプラリー実施中</p>
-            <p class="news-text">GOG系列店で台紙を購入して、参加店舗でスタンプを押してもらおう。報酬はロブスター🦐</p>
+        <aside class="notice-side" aria-label="最後の夜までの日程">
+          <div class="countdown">
+            <p class="countdown-label">最後の夜まで</p>
+            <p class="countdown-num"><span data-nights-left>—</span><small>夜</small></p>
+            <p class="countdown-date">2026年11月30日</p>
           </div>
-        </div>
-
-        <div class="news-item" data-animate="fade-up" style="--d:.08s;">
-          <div class="news-date">2026.02.01</div>
-          <div>
-            <p class="news-title">合同イベント企画中</p>
-            <p class="news-text">“夜の遊びをよりラフに”。複数店舗で皆さんが楽しめる施策を準備中。</p>
-          </div>
-        </div>
-
+          <ol class="schedule" data-schedule>
+            <li data-date="2026-11-01"><time datetime="2026-11-01">11.01</time><span>GOGフェス開幕、人気投票スタート</span></li>
+            <li data-date="2026-11-07"><time datetime="2026-11-07">11.07</time><span>人気投票の締め切り</span></li>
+            <li data-date="2026-11-08"><time datetime="2026-11-08">11.08</time><span>投票結果を発表</span></li>
+            <li data-date="2026-11-09"><time datetime="2026-11-09">11.09</time><span>1位の商品を再販売（11月30日まで）</span></li>
+            <li data-date="2026-11-23"><time datetime="2026-11-23">11.23</time><span>街中レイド戦線（Midnight合同企画）</span></li>
+            <li data-date="2026-11-30" class="is-last"><time datetime="2026-11-30">11.30</time><span>GOG 活動終了</span></li>
+          </ol>
+        </aside>
       </div>
     </section>
 
-    <!-- ABOUT -->
-    <section class="section" id="about">
+    <!-- 人気投票 -->
+    <section class="section" id="vote">
       <div class="container">
+        <header class="sec-head">
+          <p class="sec-en">Popularity vote</p>
+          <h2 class="sec-ja">もう一度、あの味を。</h2>
+          <p class="sec-lead">GOGの歴代限定メニューから、もう一度味わいたい一品に投票してください。食べ物部門・飲み物部門それぞれの1位を、期間限定で再販売します。</p>
+        </header>
 
-        <div class="kei-divider" data-animate="fade-up">
-          <span>ABOUT</span>
+        <p class="vote-facts">
+          <span>投票期間<b>11.1–11.7</b></span>
+          <span>結果発表<b>11.8</b></span>
+          <span>再販売<b>11.9–11.30</b></span>
+        </p>
+
+        <p class="vote-state" data-vote-state role="status">投票は11月1日 0:00から始まります</p>
+
+        <form class="vote-form" data-vote-form novalidate>
+          <div class="vote-cats" data-vote-cats>
+            <!-- 候補は js/anniv-data.js から描画 -->
+          </div>
+
+          <div class="vote-submit">
+            <label class="field">
+              <span>キャラクター名</span>
+              <input name="name" type="text" autocomplete="nickname" maxlength="32" placeholder="ゲーム内のキャラクター名" required />
+            </label>
+            <button class="btn primary" type="submit" data-vote-submit>投票する</button>
+            <p class="vote-rule">1人1回、食べ物部門・飲み物部門に1票ずつ。キャラクター名ごとに受け付けます。</p>
+            <p class="vote-msg" data-vote-msg aria-live="polite"></p>
+          </div>
+        </form>
+
+        <div class="results" data-results hidden>
+          <div class="results-head">
+            <h3 data-results-title>途中経過</h3>
+            <p data-results-sub>1分ごとに更新されます</p>
+          </div>
+          <div class="results-grid" data-results-grid></div>
         </div>
+      </div>
+    </section>
 
-        <div class="about-grid">
-          <div class="about-copy" data-animate="fade-up">
-            <p class="about-kicker">GOG CONCEPT</p>
-            <h3 class="about-title">最高の非日常を、あなたの居場所に。</h3>
-            <p class="about-text">
-              Bar / Club / Lounge / Restaurant / Wedding / Gift / Select Bar。<br>
-              それぞれの"らしさ"を磨きつつ、イベントや雰囲気で街の夜全体の価値を上げます。
-            </p>
+    <!-- 1周年の新商品 -->
+    <section class="section" id="arrivals">
+      <div class="container">
+        <header class="sec-head">
+          <p class="sec-en">New arrivals</p>
+          <h2 class="sec-ja">1周年の新商品</h2>
+          <p class="sec-lead">1周年を記念して、Bar105・Dear.630・Military840に新しい商品が並びます。</p>
+        </header>
 
-            <div class="about-stats">
-              <div class="stat" data-animate="fade-up" style="--d: .08s">
-                <div class="stat-num">7</div>
-                <div class="stat-label">店舗数</div>
-              </div>
-              <div class="stat" data-animate="fade-up" style="--d: .16s">
-                <div class="stat-num">17</div>
-                <div class="stat-label">従業員</div>
-              </div>
-              <div class="stat" data-animate="fade-up" style="--d: .24s">
-                <div class="stat-num">∞</div>
-                <div class="stat-label">Night Stories</div>
-              </div>
+        <article class="arrivals-feature" aria-labelledby="arrivals-bar105">
+          <div class="arrivals-store">
+            <img src="assets/logo-bar105.webp" alt="" width="52" height="52" />
+            <div>
+              <b id="arrivals-bar105">Bar105</b>
+              <span>1周年記念メニュー　11月末まで販売</span>
             </div>
           </div>
 
-          <div class="about-figure">
-            <ol class="timeline" data-animate="line">
-              <li class="tl-item" data-animate="fade-up" style="--d: .00s">
-                <div class="tl-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3l8 4v6c0 5-3.5 8-8 8s-8-3-8-8V7l8-4z" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M8 11h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  </svg>
+          <div class="products">
+            <div class="product">
+              <div class="product-visual">
+                <img class="product-main" src="assets/item-royal-crown-bottle.webp" alt="ロイヤル・クラウンのボトルと化粧箱" width="516" height="900" loading="lazy" />
+                <div class="product-split">
+                  <img src="assets/item-royal-crown-glass.webp" alt="" width="40" height="40" loading="lazy" />
+                  <span>グラス<b>×10</b></span>
                 </div>
-                <div class="tl-body">
-                  <div class="tl-title">stance</div>
-                  <div class="tl-text">特別な居場所をつくり、あなたに「チル」を</div>
-                </div>
-              </li>
+              </div>
+              <div>
+                <h3>ロイヤル・クラウン</h3>
+                <p class="product-cat">Limited edition brandy</p>
+                <dl class="product-spec">
+                  <dt>回復</dt><dd>水分50％</dd>
+                  <dt>使うと</dt><dd>グラス10杯に分かれます</dd>
+                  <dt>販売</dt><dd>11月末まで</dd>
+                </dl>
+              </div>
+            </div>
 
-              <li class="tl-item" data-animate="fade-up" style="--d: .08s">
-                <div class="tl-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M4 18V6m16 12V6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    <path d="M7 8h10M7 12h10M7 16h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  </svg>
+            <div class="product">
+              <div class="product-visual">
+                <img class="product-main" src="assets/item-royal-tea-stand.webp" alt="ロイヤル・アニバーサリーティーの3段スタンド" width="535" height="900" loading="lazy" />
+                <div class="product-split">
+                  <img src="assets/item-royal-tea-plate.webp" alt="" width="40" height="40" loading="lazy" />
+                  <span>ピース<b>×10</b></span>
                 </div>
-                <div class="tl-body">
-                  <div class="tl-title">event</div>
-                  <div class="tl-text">各店舗の世界観を統一、最後まで楽しめる物語を。</div>
-                </div>
-              </li>
-
-              <li class="tl-item" data-animate="fade-up" style="--d: .16s">
-                <div class="tl-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M6 14c3-6 9-6 12 0" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    <path d="M12 5v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                    <path d="M9 21h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  </svg>
-                </div>
-                <div class="tl-body">
-                  <div class="tl-title">management</div>
-                  <div class="tl-text">安心して働ける環境を整え、未来を作る。</div>
-                </div>
-              </li>
-
-              <li class="tl-item" data-animate="fade-up" style="--d: .24s">
-                <div class="tl-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M7 12a5 5 0 1010 0 5 5 0 10-10 0z" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                  </svg>
-                </div>
-                <div class="tl-body">
-                  <div class="tl-title">service</div>
-                  <div class="tl-text">すべてのお客様に、最高のサービスを。</div>
-                </div>
-              </li>
-            </ol>
+              </div>
+              <div>
+                <h3>ロイヤル・アニバーサリーティー</h3>
+                <p class="product-cat">Anniversary afternoon tea</p>
+                <dl class="product-spec">
+                  <dt>回復</dt><dd>食料50％</dd>
+                  <dt>使うと</dt><dd>ピース10個に分かれます</dd>
+                  <dt>販売</dt><dd>11月末まで</dd>
+                </dl>
+              </div>
+            </div>
           </div>
-        </div>
+        </article>
 
+        <div class="arrivals-more">
+          <article class="arrival-card">
+            <img src="assets/logo-dear630.webp" alt="" width="64" height="64" loading="lazy" />
+            <div>
+              <h3>Dear.630　ぽち袋・便箋</h3>
+              <p>想いを包むぽち袋と、言葉を届ける便箋。</p>
+              <span class="soon">詳細は近日公開</span>
+            </div>
+          </article>
+          <article class="arrival-card">
+            <img src="assets/logo-military840.webp" alt="" width="64" height="64" loading="lazy" />
+            <div>
+              <h3>Military840　新しい武器</h3>
+              <p>1周年に合わせて、新作の武器が入荷します。</p>
+              <span class="soon">詳細は近日公開</span>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
-    <!-- VENUES（左上見出しなし） -->
+    <!-- GOGフェス -->
+    <section class="section" id="fes">
+      <div class="container">
+        <header class="sec-head">
+          <p class="sec-en">GOG Fes</p>
+          <h2 class="sec-ja">GOGフェス ピックアップガチャ</h2>
+        </header>
+
+        <div class="fes">
+          <div class="fes-info">
+            <p>Bar105のガチャ台に、1周年の特別ピックアップ「GOGフェス」が登場します。四季を描いた和傘5本と、舞扇3本が当たります。</p>
+            <dl>
+              <dt>場所</dt><dd>Bar105 ガチャ台（GOGフェスのタブ）</dd>
+              <dt>開始</dt><dd>11月1日</dd>
+              <dt>1回</dt><dd>GOGチケット10枚</dd>
+              <dt>はずれ</dt><dd>飲食引換券5枚</dd>
+            </dl>
+          </div>
+
+          <div class="prize">
+            <div class="prize-row">
+              <div class="prize-head">
+                <h3>和傘</h3>
+                <span class="prize-rate">各0.2％（合計1％）</span>
+              </div>
+              <ul class="prize-items">
+                <li><i style="--c:#f2b6c6"></i>桜</li>
+                <li><i style="--c:#8e9fe8"></i>朝顔</li>
+                <li><i style="--c:#d9643a"></i>紅葉</li>
+                <li><i style="--c:#c9d3e6"></i>月影</li>
+                <li><i style="--c:#f5f1e8"></i>冬鶴</li>
+              </ul>
+            </div>
+            <div class="prize-row">
+              <div class="prize-head">
+                <h3>舞扇</h3>
+                <span class="prize-rate">合計3％</span>
+              </div>
+              <ul class="prize-items">
+                <li><i></i>からくり舞扇</li>
+                <li><i></i>稲荷の舞扇</li>
+                <li><i></i>龍の舞扇</li>
+              </ul>
+              <p class="prize-note">Bar105の交換所で、飲食引換券400枚と舞扇を交換できます。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1年の歩み -->
+    <section class="section" id="history">
+      <div class="container">
+        <header class="sec-head">
+          <p class="sec-en">One year</p>
+          <h2 class="sec-ja">GOGの1年</h2>
+        </header>
+
+        <ol class="history">
+          <li>
+            <time>2025</time>
+            <div><h3>GOG、はじまる</h3><p>街の夜に、Gold Owing Group が誕生。</p></div>
+          </li>
+          <li>
+            <time datetime="2026-02">2026.02</time>
+            <div><h3>夜歩きスタンプラリー</h3><p>Midnightの合同企画。台紙を手に街の店を巡り、報酬は近接武器ロブスター。</p></div>
+          </li>
+          <li>
+            <time>2026</time>
+            <div><h3>白黒店舗対決</h3><p>WHITEとBLACKの2陣営に分かれ、1週間にわたって競った店舗対抗戦。</p></div>
+          </li>
+          <li>
+            <time>2026</time>
+            <div><h3>8店舗体制へ</h3><p>WEDDING525、Dear.630、Silent735、Military840が仲間入り。</p></div>
+          </li>
+          <li>
+            <time datetime="2026-07">2026.07</time>
+            <div><h3>夏祭り</h3><p>街公式の夏祭りに、Midnightとして参加。</p></div>
+          </li>
+          <li>
+            <time datetime="2026-10">2026.10</time>
+            <div><h3>百鬼夜行スタンプラリー</h3><p>仮装して街を練り歩く、夜歩きスタンプラリーのハロウィン版。</p></div>
+          </li>
+          <li class="is-now">
+            <time datetime="2026-11">2026.11</time>
+            <div><h3>1周年、そして最後の1か月</h3><p>人気投票、GOGフェス、11月23日の街中レイド戦線。11月30日、GOGは活動を終えます。</p></div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- メッセージ -->
+    <section class="section" id="message">
+      <div class="container">
+        <article class="letter">
+          <p class="sec-en">A letter</p>
+          <h2>一年分の、ありがとう</h2>
+          <p>いつもGold Owing Groupをご利用いただき、ありがとうございます。GOGは、おかげさまで1周年を迎えることができました。</p>
+          <p>店舗ごとに、それぞれの夜がありました。ふらりと立ち寄ってくれたお客様、何度も通ってくれた常連のみなさん、そして毎晩お店に立ってくれた店員のみんな。GOGの1年は、そのすべての夜でできています。</p>
+          <p>11月30日で、GOGとしての活動は幕を下ろします。最後の1か月は、感謝を込めた企画をたくさん用意しました。</p>
+          <p>店員のみんなへ。一緒に夜をつくってくれて、本当にありがとう。ここで積み重ねた時間は、次の場所でもきっと力になります。</p>
+          <p>お客様へ。最後の夜まで、どうぞGOGで遊んでいってください。</p>
+          <p class="letter-sign">Gold Owing Group<small>オーナー</small></p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 店舗一覧 -->
     <section class="section" id="venues">
       <div class="container">
+        <header class="sec-head">
+          <p class="sec-en">Venues</p>
+          <h2 class="sec-ja">8つの店舗</h2>
+        </header>
 
-        <div class="kei-divider" data-animate="fade-up">
-          <span>VENUES</span>
-        </div>
-
-        <div class="venue-list">
-          <a href="bar105.html" data-animate="fade-up">
-            <div class="venue-row">
-              <div class="venue-left">
-                <img class="venue-logo" src="assets/logo-bar105.png" alt="Bar105" />
-                <div>
-                  <div class="venue-name">Bar105</div>
-                  <div class="venue-desc">落ち着いた雰囲気と、こだわりの一杯。</div>
-                </div>
-              </div>
-              <span class="venue-tag">Hideaway</span>
-            </div>
+        <div class="venue-grid">
+          <a class="venue-tile" href="bar105.html" style="--accent:#c9a24b">
+            <img src="assets/logo-bar105.webp" alt="" width="72" height="72" loading="lazy" />
+            <b>Bar105</b><span class="venue-cat">Bar</span><span class="venue-tag">誰かの居場所になる夜</span>
           </a>
-
-          <a href="club210.html" data-animate="fade-up" style="--d:.08s;">
-            <div class="venue-row">
-              <div class="venue-left">
-                <img class="venue-logo" src="assets/logo-club210.png" alt="Club210" />
-                <div>
-                  <div class="venue-name">Club210</div>
-                  <div class="venue-desc">“盛り上がれる夜”を作る拠点。イベントも。</div>
-                </div>
-              </div>
-              <span class="venue-tag">Events</span>
-            </div>
+          <a class="venue-tile" href="club210.html" style="--accent:#b455e0">
+            <img src="assets/logo-club210.webp" alt="" width="72" height="72" loading="lazy" />
+            <b>Club210</b><span class="venue-cat">Club</span><span class="venue-tag">音・光・人が交差する場所</span>
           </a>
-
-          <a href="lounge315.html" data-animate="fade-up" style="--d:.16s;">
-            <div class="venue-row">
-              <div class="venue-left">
-                <img class="venue-logo" src="assets/logo-lounge315.png" alt="Lounge315" />
-                <div>
-                  <div class="venue-name">Lounge315</div>
-                  <div class="venue-desc">上質な会話と余裕のある接客。</div>
-                </div>
-              </div>
-              <span class="venue-tag">Premium</span>
-            </div>
+          <a class="venue-tile" href="lounge315.html" style="--accent:#7ea6ff">
+            <img src="assets/logo-lounge315.webp" alt="" width="72" height="72" loading="lazy" />
+            <b>Lounge315</b><span class="venue-cat">Lounge</span><span class="venue-tag">上級者のための隠れ家</span>
           </a>
-
-          <a href="restaurant420.html" data-animate="fade-up" style="--d:.24s;">
-            <div class="venue-row">
-              <div class="venue-left">
-                <img class="venue-logo" src="assets/logo-restaurant420.png" alt="Restaurant420" />
-                <div>
-                  <div class="venue-name">Restaurant420</div>
-                  <div class="venue-desc">食で非日常を完成させる、記念日のための場所。</div>
-                </div>
-              </div>
-              <span class="venue-tag">Fine Dining</span>
-            </div>
+          <a class="venue-tile" href="restaurant420.html" style="--accent:#e0685a">
+            <img src="assets/logo-restaurant420.webp" alt="" width="72" height="72" loading="lazy" />
+            <b>Restaurant420</b><span class="venue-cat">Restaurant</span><span class="venue-tag">食で完成する非日常</span>
           </a>
-
-          <!-- ✅ NEW: WEDDING525 -->
-          <a href="wedding525.html" data-animate="fade-up" style="--d:.32s;">
-            <div class="venue-row">
-              <div class="venue-left">
-                <img class="venue-logo" src="assets/wedding525-logo.png" alt="WEDDING525" />
-                <div>
-                  <div class="venue-name">WEDDING525</div>
-                  <div class="venue-desc">結婚のご案内から式・披露宴まで。人生の節目を最高に。</div>
-                </div>
-              </div>
-              <span class="venue-tag">Ceremony</span>
-            </div>
+          <a class="venue-tile" href="wedding525.html" style="--accent:#e58fb0">
+            <img src="assets/wedding525-logo.webp" alt="" width="72" height="72" loading="lazy" />
+            <b>WEDDING525</b><span class="venue-cat">Wedding</span><span class="venue-tag">人生の節目を彩るセレモニー</span>
           </a>
-
-          <!-- NEW: Dear.630 -->
-          <a href="dear630.html" data-animate="fade-up" style="--d:.40s;">
-            <div class="venue-row">
-              <div class="venue-left">
-                <img class="venue-logo" src="assets/logo-dear630.png" alt="Dear.630" />
-                <div>
-                  <div class="venue-name">Dear.630</div>
-                  <div class="venue-desc">大切な人へ、想いを届ける特別な場所。</div>
-                </div>
-              </div>
-              <span class="venue-tag">Gift Salon</span>
-            </div>
+          <a class="venue-tile" href="dear630.html" style="--accent:#5fbf95">
+            <img src="assets/logo-dear630.webp" alt="" width="72" height="72" loading="lazy" />
+            <b>Dear.630</b><span class="venue-cat">Gift salon</span><span class="venue-tag">想いを形にするギフトサロン</span>
           </a>
-
-          <!-- NEW: Silent735 -->
-          <a href="silent735.html" data-animate="fade-up" style="--d:.48s;">
-            <div class="venue-row">
-              <div class="venue-left">
-                <img class="venue-logo" src="assets/logo-silent735.png" alt="Silent735" />
-                <div>
-                  <div class="venue-name">Silent735</div>
-                  <div class="venue-desc">静寂の中で極上の一杯を。</div>
-                </div>
-              </div>
-              <span class="venue-tag">Select Bar</span>
-            </div>
+          <a class="venue-tile" href="silent735.html" style="--accent:#8f8f9c">
+            <img class="is-light" src="assets/logo-silent735.webp" alt="" width="72" height="72" loading="lazy" />
+            <b>Silent735</b><span class="venue-cat">Select bar</span><span class="venue-tag">静寂の中で極上の一杯を</span>
+          </a>
+          <a class="venue-tile" href="military840.html" style="--accent:#8a9a5b">
+            <img src="assets/logo-military840.webp" alt="" width="72" height="72" loading="lazy" />
+            <b>Military840</b><span class="venue-cat">Gun shop</span><span class="venue-tag">武器を、魅せる一挺に。</span>
           </a>
         </div>
-
       </div>
     </section>
 
-    <!-- FAQ（左上見出しなし） -->
+    <!-- 最新情報 -->
+    <section class="section" id="news">
+      <div class="container">
+        <header class="sec-head">
+          <p class="sec-en">News</p>
+          <h2 class="sec-ja">最新情報</h2>
+        </header>
+        <div class="news-list">
+          <div class="news-item">
+            <div class="news-date">2026.10.30</div>
+            <div>
+              <p class="news-title">1周年企画の詳細を公開しました</p>
+              <p class="news-text">人気投票、1周年の新商品、GOGフェスの内容を<a href="#vote">このページ</a>にまとめました。</p>
+            </div>
+          </div>
+          <div class="news-item">
+            <div class="news-date">2026.10.15</div>
+            <div>
+              <p class="news-title">活動終了のお知らせ</p>
+              <p class="news-text">GOGは2026年11月30日をもって活動を終了します。<a href="#notice">お知らせを読む</a></p>
+            </div>
+          </div>
+          <div class="news-item">
+            <div class="news-date">2026.10.15</div>
+            <div>
+              <p class="news-title">百鬼夜行スタンプラリー開催</p>
+              <p class="news-text">10月31日まで。仮装して街を巡る、Midnightの秋の合同企画です。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
     <section class="section" id="faq">
       <div class="container">
-
-        <div class="kei-divider" data-animate="fade-up">
-          <span>FAQ</span>
-        </div>
-
+        <header class="sec-head">
+          <p class="sec-en">FAQ</p>
+          <h2 class="sec-ja">よくある質問</h2>
+        </header>
         <div class="faq">
-          <details data-animate="fade-up">
-            <summary>営業情報はどこで確認できますか？<span>+</span></summary>
-            <div class="ans">birdyにて開店・閉店情報を確認いただけます。</div>
+          <details>
+            <summary>人気投票には誰でも参加できますか？<span aria-hidden="true">+</span></summary>
+            <div class="ans">はい。キャラクター名を入力して、1人1回、食べ物部門と飲み物部門に1票ずつ投票できます。</div>
           </details>
-          <details data-animate="fade-up" style="--d:.16s;">
-            <summary>問い合わせはどこから？<span>+</span></summary>
+          <details>
+            <summary>新商品や再販売の商品は、どこで買えますか？<span aria-hidden="true">+</span></summary>
+            <div class="ans">各店舗の店頭で販売します。営業日はbirdyでご確認ください。</div>
+          </details>
+          <details>
+            <summary>営業情報はどこで確認できますか？<span aria-hidden="true">+</span></summary>
+            <div class="ans">birdyで各店舗の開店・閉店情報をお知らせしています。</div>
+          </details>
+          <details>
+            <summary>問い合わせはどこから？<span aria-hidden="true">+</span></summary>
             <div class="ans">サービスからお電話いただくか、企業Discordからお問い合わせください。</div>
           </details>
         </div>
-
       </div>
     </section>
 
-    <!-- CONTACT（左上見出しなし） -->
-    <section class="section" id="contact">
+    <!-- CONTACT -->
+    <section class="section contact" id="contact">
       <div class="container">
-
-        <div class="kei-divider" data-animate="fade-up">
-          <span>CONTACT</span>
+        <header class="sec-head">
+          <p class="sec-en">Contact</p>
+          <h2 class="sec-ja">お問い合わせ</h2>
+        </header>
+        <p>お問い合わせは企業Discordで受け付けています。</p>
+        <div class="actions">
+          <a class="btn primary" href="https://discord.gg/tVVu4q3xNs" target="_blank" rel="noopener noreferrer">Discordを開く</a>
         </div>
-
-        <div class="block" data-animate="fade-up">
-          <div class="label">DISCORD</div>
-          <div class="content">
-            <h3>【窓口】企業Discordに偏移します。</h3>
-            <div class="actions" style="margin-top:12px;">
-              <a class="btn primary" href="https://discord.gg/tVVu4q3xNs" target="_blank" rel="noopener noreferrer">お問い合わせ</a>
-            </div>
-          </div>
-        </div>
-
       </div>
     </section>
 
   </main>
 
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
-        <img class="footer-logo" src="assets/logo-gog.png" alt="Gold Owing Group" />
+        <img class="footer-logo" src="assets/logo-gog.webp" alt="" width="44" height="44" />
         <div>
-          <div style="font-weight:700; letter-spacing:.08em;">Gold Owing Group</div>
-          <div class="small">© <span data-year></span> Gold Owing Group.</div>
+          <div class="footer-name">Gold Owing Group</div>
+          <div class="small">© <span data-year>2026</span> Gold Owing Group</div>
         </div>
       </div>
-      <div class="links">
-        <a href="index.html">GOG</a>
+      <nav class="links" aria-label="店舗">
         <a href="bar105.html">Bar105</a>
         <a href="club210.html">Club210</a>
         <a href="lounge315.html">Lounge315</a>
@@ -377,10 +494,14 @@
         <a href="wedding525.html">WEDDING525</a>
         <a href="dear630.html">Dear.630</a>
         <a href="silent735.html">Silent735</a>
-      </div>
+        <a href="military840.html">Military840</a>
+      </nav>
     </div>
   </footer>
+  <!-- /FOOTER -->
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js" defer></script>
+  <script src="js/anniv-data.js" defer></script>
+  <script src="js/anniv.js" defer></script>
 </body>
 </html>

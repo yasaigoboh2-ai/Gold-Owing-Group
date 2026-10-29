@@ -1,56 +1,67 @@
+// ===== 日本時間の「今日」 =====
+const jstToday = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+
 // ===== Footer year =====
 document.querySelectorAll("[data-year]").forEach((el) => {
   el.textContent = new Date().getFullYear();
 });
 
-// ===== Mobile menu (burger) =====
+// ===== Mobile menu =====
 (() => {
   const burger = document.querySelector("[data-burger]");
   const drawer = document.querySelector("[data-drawer]");
   if (!burger || !drawer) return;
 
-  const open = () => {
-    drawer.style.display = "block";
-    drawer.setAttribute("aria-hidden", "false");
-    burger.setAttribute("aria-expanded", "true");
-  };
-
-  const close = () => {
-    drawer.style.display = "none";
-    drawer.setAttribute("aria-hidden", "true");
-    burger.setAttribute("aria-expanded", "false");
-  };
-
-  const toggle = () => {
-    const expanded = burger.getAttribute("aria-expanded") === "true";
-    expanded ? close() : open();
+  const setOpen = (open) => {
+    drawer.classList.toggle("is-open", open);
+    burger.setAttribute("aria-expanded", String(open));
+    burger.textContent = open ? "閉じる" : "メニュー";
   };
 
   burger.addEventListener("click", (e) => {
     e.stopPropagation();
-    toggle();
+    setOpen(burger.getAttribute("aria-expanded") !== "true");
   });
-
   drawer.addEventListener("click", (e) => {
-    const a = e.target.closest("a");
-    if (a) close();
+    if (e.target.closest("a")) setOpen(false);
   });
-
   document.addEventListener("click", (e) => {
-    const isInside = drawer.contains(e.target) || burger.contains(e.target);
-    if (!isInside) close();
+    if (!drawer.contains(e.target) && !burger.contains(e.target)) setOpen(false);
   });
-
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") close();
+    if (e.key === "Escape" && drawer.classList.contains("is-open")) {
+      setOpen(false);
+      burger.focus();
+    }
   });
 })();
 
-// ===== Scroll reveal =====
+// ===== 店舗プルダウン：外側クリック・Escで閉じる =====
+(() => {
+  const menu = document.querySelector("[data-nav-stores]");
+  if (!menu) return;
+  document.addEventListener("click", (e) => {
+    if (menu.open && !menu.contains(e.target)) menu.open = false;
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && menu.open) {
+      menu.open = false;
+      menu.querySelector("summary")?.focus();
+    }
+  });
+  menu.addEventListener("click", (e) => {
+    if (e.target.closest("a")) menu.open = false;
+  });
+})();
+
+// ===== Scroll reveal（店舗ページ） =====
 (() => {
   const targets = document.querySelectorAll("[data-animate]");
   if (!targets.length) return;
-
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach((el) => el.classList.add("is-inview"));
+    return;
+  }
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -60,10 +71,32 @@ document.querySelectorAll("[data-year]").forEach((el) => {
         }
       });
     },
-    { threshold: 0.18 }
+    { threshold: 0.15 }
   );
-
   targets.forEach((el) => io.observe(el));
+})();
+
+// ===== 最後の夜までのカウント・日程の既読化 =====
+(() => {
+  const today = jstToday();
+  const LAST = "2026-11-30";
+
+  const num = document.querySelector("[data-nights-left]");
+  if (num) {
+    const box = num.closest(".countdown");
+    const label = box?.querySelector(".countdown-label");
+    const days = Math.round((Date.parse(LAST) - Date.parse(today)) / 864e5);
+    if (days > 0) {
+      num.textContent = days;
+    } else if (label) {
+      label.textContent = days === 0 ? "今夜が、最後の夜です" : "1年間、ありがとうございました";
+      num.parentElement.hidden = true;
+    }
+  }
+
+  document.querySelectorAll("[data-schedule] li[data-date]").forEach((li) => {
+    if (li.dataset.date < today) li.classList.add("is-past");
+  });
 })();
 
 // ===== Reservation modal + submit -> API =====
@@ -88,11 +121,9 @@ document.querySelectorAll("[data-year]").forEach((el) => {
     document.body.classList.remove("modal-open");
   };
 
-  // open / close
   openBtn.addEventListener("click", openModal);
   closeBtns.forEach((btn) => btn.addEventListener("click", closeModal));
 
-  // ESCで閉じる
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal.getAttribute("aria-hidden") === "false") {
       closeModal();
@@ -101,18 +132,12 @@ document.querySelectorAll("[data-year]").forEach((el) => {
 
   // 店舗名（Webhook振り分け用）
   const resolvePageName = () => {
-    // ✅ 最優先：<body data-page="WEDDING525"> みたいに決め打ち
     if (document.body?.dataset?.page) return document.body.dataset.page;
-
-    // 次点：クラス判定（保険）
     if (document.body.classList.contains("page-restaurant")) return "Restaurant420";
     if (document.body.classList.contains("page-wedding")) return "WEDDING525";
-
-    // 最後：title
     return document.title || "GOG";
   };
 
-  // submit -> your API
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -126,7 +151,6 @@ document.querySelectorAll("[data-year]").forEach((el) => {
       page: resolvePageName(),
     };
 
-    // 必須チェック
     if (!payload.name || !payload.contact || !payload.datetime || !payload.people) {
       alert("必須項目を入力してください。");
       return;
@@ -139,7 +163,6 @@ document.querySelectorAll("[data-year]").forEach((el) => {
         body: JSON.stringify(payload),
       });
 
-      // 失敗時：APIのメッセージも拾う
       if (!res.ok) {
         let detail = "";
         try {
