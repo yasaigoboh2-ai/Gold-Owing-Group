@@ -9,6 +9,7 @@
   const candidates = sample ? window.GOG_ANNIV_SAMPLE || [] : cfg.candidates || [];
   const logos = window.GOG_ANNIV.storeLogos || {};
   const VOTED_KEY = "gog_anniv_vote_2026";
+  const API = cfg.api || "/api/vote";
 
   const start = Date.parse(cfg.start);
   const end = Date.parse(cfg.end);
@@ -153,7 +154,7 @@
     }
     if (sample) return renderResults(sampleTallies(), phase);
     try {
-      const res = await fetch("/api/vote", { headers: { Accept: "application/json" } });
+      const res = await fetch(API, { headers: { Accept: "application/json" } });
       const j = await res.json();
       if (!res.ok || !j.ok) throw new Error(j?.message || res.status);
       renderResults(j.tallies || [], phase);
@@ -191,7 +192,7 @@
 
     submit.disabled = true;
     try {
-      const res = await fetch("/api/vote", {
+      const res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, ...picks }),

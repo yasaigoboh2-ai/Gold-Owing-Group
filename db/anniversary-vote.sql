@@ -3,7 +3,8 @@
 --  Supabase → SQL Editor にこのファイルの中身を貼り付けて「Run」してください。
 --  何度実行しても大丈夫です。
 --
---  読み書きはHPのサーバー側（api/vote.js）からだけ行います。
+--  Supabaseプロジェクト：gog-portal（社員ポータルと同じ）
+--  読み書きは Edge Function「anniv-vote」（supabase/functions/anniv-vote）からだけ行います。
 --  RLSを有効にしてポリシーを作らないので、公開キー(anon)からは見えません。
 -- ============================================================
 

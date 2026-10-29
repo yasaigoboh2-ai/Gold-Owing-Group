@@ -1,6 +1,6 @@
 /* =========================================================
    1周年 人気投票のデータ
-   - 日程を変えるときは、api/vote.js の VOTE_START / VOTE_END と
+   - 日程を変えるときは、supabase/functions/anniv-vote/index.ts の VOTE_START / VOTE_END と
      index.html の「投票期間」表記も合わせて変えてください。
    - 候補の id は投票データのキーになります。投票が始まったら変えないでください。
      使える文字：英小文字・数字・ハイフン（例：food-moonwolf）
@@ -8,6 +8,8 @@
    ========================================================= */
 window.GOG_ANNIV = {
   vote: {
+    // 投票の受付（Supabase Edge Function）
+    api: "https://wacmbwlypznivloopsaq.supabase.co/functions/v1/anniv-vote",
     start: "2026-11-01T00:00:00+09:00",
     end: "2026-11-08T00:00:00+09:00", // 11月7日 23:59 まで
     resale: "11月9日〜30日",
