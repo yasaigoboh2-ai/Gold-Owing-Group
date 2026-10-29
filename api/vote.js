@@ -4,7 +4,8 @@
 //
 // 必要な環境変数（Vercel → Settings → Environment Variables）
 //   SUPABASE_URL               例: https://xxxx.supabase.co
-//   SUPABASE_SERVICE_ROLE_KEY  Supabase → Project Settings → API の service_role キー（公開しないこと）
+//   SUPABASE_SERVICE_ROLE_KEY  Supabase → Project Settings → API Keys の secret キー（sb_secret_…）
+//                              または Legacy API Keys の service_role キー。どちらでも可（公開しないこと）
 //   VOTE_SALT                  任意の長い文字列（IPをそのまま保存しないためのもの）
 //   VOTE_FORCE_OPEN            "1" にすると期間外でも投票できる（動作テスト用。終わったら消す）
 import crypto from "node:crypto";
@@ -44,7 +45,9 @@ export default async function handler(req, res) {
   }
 
   const rest = `${url}/rest/v1`;
-  const headers = { apikey: key, Authorization: `Bearer ${key}`, "Content-Type": "application/json" };
+  // 新形式の秘密キー（sb_secret_…）は apikey ヘッダーだけ、旧形式（JWT）は Authorization にも入れる
+  const headers = { apikey: key, "Content-Type": "application/json" };
+  if (!key.startsWith("sb_")) headers.Authorization = `Bearer ${key}`;
   const now = Date.now();
   const phase =
     process.env.VOTE_FORCE_OPEN === "1" ? "open" : now < VOTE_START ? "before" : now < VOTE_END ? "open" : "closed";
