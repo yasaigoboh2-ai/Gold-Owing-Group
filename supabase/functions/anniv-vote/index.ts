@@ -26,7 +26,6 @@ const REDIRECT_URIS = [
 const CATEGORIES = ["food", "drink"];
 const ID_RE = /^[a-z0-9][a-z0-9-]{0,47}$/;
 const MAX_PER_IP = 3; // 同じ回線から投票できるDiscordアカウント数（同居・家族向けの余裕）
-const SALT = "gog-anniv-2026";
 const DISCORD_API = "https://discord.com/api/v10";
 
 const ALLOWED_ORIGINS = [
@@ -178,7 +177,8 @@ export async function handle(req: Request): Promise<Response> {
       req.headers.get("cf-connecting-ip") ||
       req.headers.get("x-real-ip") ||
       (req.headers.get("x-forwarded-for") || "").split(",")[0].trim();
-    const ipHash = (await sha256(`${SALT}:${ip}`)).slice(0, 32);
+    // 合言葉は公開されていない秘密キーから作る（IPを元に戻せないように）
+    const ipHash = (await sha256(`${await sha256(`anniv-ip:${key}`)}:${ip}`)).slice(0, 32);
     const voterKey = `discord:${user.id}`;
 
     // 同じ回線から、別のDiscordアカウントでの投票が多すぎないか
