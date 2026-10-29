@@ -570,10 +570,10 @@ body.modal-open{ overflow:hidden; }
 .cand input:disabled{ cursor:default; }
 .cands-empty{ padding:26px 18px; border:1px dashed var(--line); border-radius:var(--radius); color:var(--muted); text-align:center; font-size:14.5px; }
 
-.vote-submit{ display:grid; grid-template-columns:minmax(0, 360px) auto; justify-content:center; align-items:end; gap:14px; }
-.vote-submit .field input{ min-height:46px; }
-.vote-rule{ grid-column:1 / -1; margin:0; text-align:center; font-size:13px; color:var(--muted); }
-.vote-msg{ grid-column:1 / -1; margin:0; text-align:center; font-size:14.5px; min-height:1.6em; }
+.vote-submit{ display:grid; justify-items:center; gap:14px; }
+.btn-discord{ gap:10px; min-height:52px; padding:12px 28px; font-size:15px; }
+.vote-rule{ margin:0; max-width:36em; text-align:center; font-size:13px; color:var(--muted); }
+.vote-msg{ margin:0; text-align:center; font-size:14.5px; min-height:1.6em; }
 .vote-msg.is-ok{ color:var(--champagne); }
 .vote-msg.is-err{ color:#e7a08e; }
 
@@ -744,7 +744,6 @@ body.modal-open{ overflow:hidden; }
   .news-item{ grid-template-columns:1fr; gap:4px; }
   .about-grid, .notice-grid, .fes, .vote-cats, .results-grid, .products, .arrivals-more{ grid-template-columns:1fr; }
   .plan-grid{ grid-template-columns:1fr; }
-  .vote-submit{ grid-template-columns:1fr; }
   .vote-submit .btn{ width:100%; }
 }
 @media (max-width:620px){

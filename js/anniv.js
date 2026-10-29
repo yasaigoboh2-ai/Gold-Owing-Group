@@ -9,7 +9,10 @@
   const candidates = sample ? window.GOG_ANNIV_SAMPLE || [] : cfg.candidates || [];
   const logos = window.GOG_ANNIV.storeLogos || {};
   const VOTED_KEY = "gog_anniv_vote_2026";
+  const PENDING_KEY = "gog_anniv_vote_pending";
   const API = cfg.api || "/api/vote";
+  // Discordから戻ってくるURL（Discordのアプリ設定にも同じものを登録する）
+  const REDIRECT_URI = location.origin + location.pathname.replace(/index\.html$/, "");
 
   const start = Date.parse(cfg.start);
   const end = Date.parse(cfg.end);
@@ -37,12 +40,21 @@
     get() { try { return localStorage.getItem(VOTED_KEY); } catch { return null; } },
     set() { try { localStorage.setItem(VOTED_KEY, "1"); } catch {} },
   };
+  const pending = {
+    get() { try { return JSON.parse(sessionStorage.getItem(PENDING_KEY) || "null"); } catch { return null; } },
+    set(v) { try { sessionStorage.setItem(PENDING_KEY, JSON.stringify(v)); } catch {} },
+    clear() { try { sessionStorage.removeItem(PENDING_KEY); } catch {} },
+  };
+  const randomState = () => {
+    const a = new Uint8Array(16);
+    crypto.getRandomValues(a);
+    return [...a].map((b) => b.toString(16).padStart(2, "0")).join("");
+  };
 
   const state = $("[data-vote-state]");
   const cats = $("[data-vote-cats]");
   const submit = $("[data-vote-submit]");
   const msg = $("[data-vote-msg]");
-  const nameInput = root.querySelector('input[name="name"]');
   const results = $("[data-results]");
 
   // ----- 候補を描画 -----
@@ -84,7 +96,7 @@
   const applyPhase = () => {
     const phase = phaseNow();
     const voted = !!storage.get();
-    const open = phase === "open" && !voted && candidates.length > 0;
+    const open = phase === "open" && !voted && candidates.length > 0 && (!!cfg.discordClientId || sample);
 
     root.querySelectorAll("input").forEach((i) => (i.disabled = !open));
     submit.disabled = !open;
@@ -163,58 +175,98 @@
     }
   };
 
-  // ----- 投票の送信 -----
-  root.addEventListener("submit", async (e) => {
+  // ----- 投票：① 選んだ商品を覚えて Discord の確認画面へ -----
+  const fail = (text) => {
+    msg.className = "vote-msg is-err";
+    msg.textContent = text;
+  };
+
+  root.addEventListener("submit", (e) => {
     e.preventDefault();
     msg.className = "vote-msg";
     msg.textContent = "";
 
     const fd = new FormData(root);
-    const name = (fd.get("name") || "").toString().trim();
     const picks = Object.fromEntries(cfg.categories.map((c) => [c.id, fd.get(c.id)]));
     const missing = cfg.categories.filter((c) => !picks[c.id]).map((c) => c.label);
-
-    const fail = (text) => {
-      msg.classList.add("is-err");
-      msg.textContent = text;
-    };
     if (missing.length) return fail(`${missing.join("と")}の商品を選んでください。`);
-    if (!name) {
-      nameInput.focus();
-      return fail("キャラクター名を入力してください。");
-    }
 
     if (sample) {
-      msg.classList.add("is-ok");
-      msg.textContent = "（見本表示のため送信していません）";
+      msg.className = "vote-msg is-ok";
+      msg.textContent = "（見本表示のため、Discordには移動しません）";
       return;
     }
 
+    const st = randomState();
+    pending.set({ state: st, picks, at: Date.now() });
+    const q = new URLSearchParams({
+      response_type: "code",
+      client_id: cfg.discordClientId,
+      scope: "identify",
+      redirect_uri: REDIRECT_URI,
+      state: st,
+      prompt: "none",
+    });
     submit.disabled = true;
+    msg.className = "vote-msg";
+    msg.textContent = "Discordの確認画面に移動します…";
+    location.href = `https://discord.com/oauth2/authorize?${q}`;
+  });
+
+  // ----- 投票：② Discord から戻ってきたら投票を送る -----
+  const finishDiscord = async () => {
+    const q = new URLSearchParams(location.search);
+    const code = q.get("code");
+    const err = q.get("error");
+    const st = q.get("state");
+    if (!code && !err) return;
+
+    // URLから code を消して、投票の場所に戻す
+    history.replaceState(null, "", location.pathname + "#vote");
+    document.getElementById("vote")?.scrollIntoView();
+
+    const p = pending.get();
+    pending.clear();
+
+    if (err) return fail("Discordでの確認がキャンセルされました。投票するには、もう一度ボタンを押してください。");
+    if (!p || p.state !== st || Date.now() - p.at > 10 * 60e3) {
+      return fail("確認の有効期限が切れました。商品を選び直して、もう一度ボタンを押してください。");
+    }
+
+    // 選んでいた商品を表示に戻す
+    Object.entries(p.picks).forEach(([cat, id]) => {
+      const input = root.querySelector(`input[name="${cat}"][value="${CSS.escape(String(id))}"]`);
+      if (input) input.checked = true;
+    });
+
+    submit.disabled = true;
+    msg.className = "vote-msg";
+    msg.textContent = "Discordで確認しています…";
     try {
       const res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, ...picks }),
+        body: JSON.stringify({ code, redirect_uri: REDIRECT_URI, ...p.picks }),
       });
       let j = {};
       try { j = await res.json(); } catch {}
 
       if (res.ok && j.ok) {
         storage.set();
-        msg.classList.add("is-ok");
+        msg.className = "vote-msg is-ok";
         msg.textContent = "投票しました。ありがとうございます。";
         loadResults();
         return;
       }
+      if (res.status === 409) storage.set();
       fail(j.message || "投票を受け付けられませんでした。時間をおいてもう一度お試しください。");
     } catch {
       fail("送信できませんでした。通信状況を確認して、もう一度お試しください。");
     }
     applyPhase();
-  });
+  };
 
-  loadResults();
+  loadResults().then(finishDiscord);
   setInterval(() => {
     if (phaseNow() === "open" && !document.hidden) loadResults();
   }, 60e3);
