@@ -35,6 +35,15 @@
   };
 
   const $ = (sel) => document.querySelector(sel);
+  // 商品名：「|」は折り返してよい位置。文字だけ欲しいときは plain、表示は wrapName
+  const plain = (n) => String(n).replaceAll("|", "");
+  const wrapName = (node, n) => {
+    String(n).split("|").forEach((part, i) => {
+      if (i) node.append(document.createElement("wbr"));
+      node.append(part);
+    });
+    return node;
+  };
   const el = (tag, cls, text) => {
     const n = document.createElement(tag);
     if (cls) n.className = cls;
@@ -72,9 +81,9 @@
     zoomInput = input || null;
     const img = zoom.querySelector("[data-zoom-img]");
     img.src = c.image ? largeOf(c.image) : logos[c.store] || "assets/logo-gog.webp";
-    img.alt = c.name;
+    img.alt = plain(c.name);
     zoom.querySelector("[data-zoom-meta]").textContent = [c.store, c.period].filter(Boolean).join("　");
-    zoom.querySelector("[data-zoom-name]").textContent = c.name;
+    wrapName(Object.assign(zoom.querySelector("[data-zoom-name]"), { textContent: "" }), c.name);
     const canPick = !!input && !input.disabled;
     zoomPick.hidden = !canPick;
     zoomPick.disabled = !!input?.checked;
@@ -96,7 +105,7 @@
   const zoomButton = (c, input, cls) => {
     const b = el("button", cls);
     b.type = "button";
-    b.setAttribute("aria-label", `${c.name}の画像を大きく見る`);
+    b.setAttribute("aria-label", `${plain(c.name)}の画像を大きく見る`);
     const img = el("img");
     img.src = c.image || logos[c.store] || "assets/logo-gog.webp";
     img.alt = "";
@@ -151,7 +160,7 @@
             body.append(img);
           }
           const txt = el("span", "cand-text");
-          txt.append(el("span", "cand-name", c.name));
+          txt.append(wrapName(el("span", "cand-name"), c.name));
           if (c.period) txt.append(el("span", "cand-store", c.period));
           body.append(txt, el("span", "cand-check"));
           label.append(input, body);
@@ -187,7 +196,7 @@
       const c = candidates.find((x) => x.id === fd.get(cat.id));
       if (i) picked.append("　");
       picked.append(`${cat.label.replace("部門", "")}：`);
-      picked.append(el("b", null, c ? c.name : "未選択"));
+      picked.append(el("b", null, c ? plain(c.name) : "未選択"));
     });
   };
   root.addEventListener("change", showPicked);
@@ -244,7 +253,7 @@
       rows.filter((r) => r.pos <= LIMIT).forEach((r) => {
         const li = el("li");
         if (r.pos === 1 && max > 0) li.classList.add("is-top");
-        const name = el("span", "rank-name", r.name);
+        const name = wrapName(el("span", "rank-name"), r.name);
         name.append(el("small", "rank-store", r.store));
         if (phase === "closed" && r.pos === 1 && max > 0) name.append(el("span", "rank-win", "再販売決定"));
         const bar = el("span", "rank-bar");
