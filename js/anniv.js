@@ -163,7 +163,8 @@
           }
           const txt = el("span", "cand-text");
           txt.append(wrapName(el("span", "cand-name"), c.name));
-          if (c.period) txt.append(el("span", "cand-store", c.period));
+          // 「・」のあとで折り返す（「ギフトボ／ックス」のような切れ方を防ぐ）
+          if (c.period) txt.append(wrapName(el("span", "cand-store"), String(c.period).replaceAll("・", "・|")));
           body.append(txt, el("span", "cand-check"));
           label.append(input, body);
           // カードのどこを押しても大きく見る（選ぶのは拡大画面のボタンから）
