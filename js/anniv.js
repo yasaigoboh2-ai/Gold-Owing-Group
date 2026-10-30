@@ -143,12 +143,31 @@
           input.name = cat.id;
           input.value = c.id;
           const body = el("span", "cand-body" + (c.image ? " has-img" : ""));
-          if (c.image) body.append(zoomButton(c, input, "cand-zoom"));
+          if (c.image) {
+            const img = el("img", "cand-img");
+            img.src = c.image;
+            img.alt = "";
+            img.loading = "lazy";
+            body.append(img);
+          }
           const txt = el("span", "cand-text");
           txt.append(el("span", "cand-name", c.name));
           if (c.period) txt.append(el("span", "cand-store", c.period));
           body.append(txt, el("span", "cand-check"));
           label.append(input, body);
+          // カードのどこを押しても大きく見る（選ぶのは拡大画面のボタンから）
+          label.addEventListener("click", (e) => {
+            if (e.target === input) return; // キーボード（Space・矢印）での選択はそのまま
+            e.preventDefault();
+            openZoom(c, input);
+          });
+          // Enter でも大きく見る（フォームが送信されないように）
+          input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              openZoom(c, input);
+            }
+          });
           wrap.append(label);
         });
         group.append(wrap);
