@@ -14,7 +14,8 @@
   const test = (params.has("test") || pendingTest) && Date.now() < Date.parse(cfg.start);
   const candidates = sample ? window.GOG_ANNIV_SAMPLE || [] : cfg.candidates || [];
   const logos = window.GOG_ANNIV.storeLogos || {};
-  const VOTED_KEY = test ? "gog_anniv_vote_test" : "gog_anniv_vote_2026";
+  // 「投票済み」の記録。以前のテスト（10/30）の記録が残っていても影響しないよう、名前を新しくしている
+  const VOTED_KEY = test ? "gog_anniv_voted_test_1031" : "gog_anniv_voted_2026";
   const API = cfg.api || "/api/vote";
   const RESULTS_API = test ? `${API}?test=1` : API;
   // Discordから戻ってくるURL（Discordのアプリ設定にも同じものを登録する）
