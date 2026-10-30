@@ -191,7 +191,11 @@
         bar.append(fill);
         const mid = el("div");
         mid.append(name, bar);
-        li.append(el("span", "rank-pos", String(r.pos)), mid, el("span", "rank-votes", `${r.votes}票`));
+        const thumb = el("img", "rank-img");
+        thumb.src = r.image || logos[r.store] || "assets/logo-gog.webp";
+        thumb.alt = "";
+        thumb.loading = "lazy";
+        li.append(el("span", "rank-pos", String(r.pos)), thumb, mid, el("span", "rank-votes", `${r.votes}票`));
         ol.append(li);
         requestAnimationFrame(() => fill.style.setProperty("--w", max ? `${(r.votes / max) * 100}%` : "0%"));
       });

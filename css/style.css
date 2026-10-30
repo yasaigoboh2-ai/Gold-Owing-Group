@@ -561,9 +561,9 @@ body.modal-open{ overflow:hidden; }
   background:rgba(23,17,11,.6);
   transition:border-color .15s ease, background .15s ease;
 }
-.cand-body.has-img{ grid-template-columns:44px 1fr auto; }
+.cand-body.has-img{ grid-template-columns:56px 1fr auto; padding:6px 12px 6px 6px; }
 .cand:hover .cand-body{ border-color:var(--line); }
-.cand-img{ width:44px; height:44px; border-radius:8px; object-fit:contain; background:radial-gradient(circle at 50% 45%, rgba(236,217,168,.16), rgba(0,0,0,.4) 70%); }
+.cand-img{ width:56px; height:56px; border-radius:8px; object-fit:contain; padding:3px; background:radial-gradient(circle at 50% 45%, rgba(236,217,168,.14), rgba(0,0,0,.35) 72%); }
 .cand-text{ min-width:0; }
 .cand-name{ display:block; font-size:14.5px; font-weight:700; line-height:1.45; }
 .cand-store{ display:block; font-family:var(--latin); font-size:13px; color:var(--muted); line-height:1.3; }
@@ -592,7 +592,8 @@ body.modal-open{ overflow:hidden; }
 .results-grid{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(18px, 3vw, 36px); }
 .rank{ list-style:none; margin:0; padding:0; }
 .rank-cat{ margin:0 0 12px; font-size:16px; font-weight:700; letter-spacing:.08em; }
-.rank li{ display:grid; grid-template-columns:30px 1fr auto; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line-soft); }
+.rank li{ display:grid; grid-template-columns:30px 40px 1fr auto; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--line-soft); }
+.rank-img{ width:40px; height:40px; object-fit:contain; }
 .rank-pos{ font-family:var(--latin); font-size:20px; color:var(--muted); text-align:center; }
 .rank-name{ font-size:14.5px; line-height:1.5; }
 .rank-bar{ display:block; height:3px; margin-top:6px; background:var(--line-soft); border-radius:2px; overflow:hidden; }
@@ -600,7 +601,8 @@ body.modal-open{ overflow:hidden; }
 .rank-store{ margin-left:8px; font-family:var(--latin); font-size:12.5px; color:var(--muted); font-weight:400; }
 .rank-more{ margin:10px 0 0; font-size:13px; color:var(--muted); }
 .rank-votes{ font-family:var(--latin); font-size:16px; color:var(--champagne); }
-.rank li.is-top .rank-pos{ color:var(--champagne); }
+.rank li.is-top .rank-img{ width:40px; height:40px; object-fit:contain; }
+.rank-pos{ color:var(--champagne); }
 .rank li.is-top .rank-name{ font-weight:700; }
 .rank-win{ display:inline-block; margin-left:8px; padding:1px 8px; font-size:11.5px; border-radius:999px; color:#1a1209; background:var(--foil); vertical-align:2px; }
 .results-note{ margin:16px 0 0; text-align:center; font-size:13px; color:var(--muted); }
