@@ -472,6 +472,22 @@
       </div>
     </section>
 
+    <!-- 投票候補の画像を大きく見る -->
+    <dialog class="zoom" data-zoom aria-labelledby="zoom-name">
+      <div class="zoom-inner">
+        <button class="zoom-x" type="button" data-zoom-close aria-label="閉じる"><span aria-hidden="true">×</span></button>
+        <div class="zoom-figure"><img data-zoom-img alt="" /></div>
+        <div class="zoom-info">
+          <p class="zoom-meta" data-zoom-meta></p>
+          <h3 id="zoom-name" data-zoom-name></h3>
+          <div class="zoom-actions">
+            <button class="btn primary" type="button" data-zoom-pick>この商品を選ぶ</button>
+            <button class="btn ghost" type="button" data-zoom-close>閉じる</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
   </main>
 
   <!-- FOOTER -->

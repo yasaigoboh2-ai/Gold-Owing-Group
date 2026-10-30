@@ -62,6 +62,54 @@
   const msg = $("[data-vote-msg]");
   const results = $("[data-results]");
 
+  // ----- 画像を大きく見る -----
+  const zoom = $("[data-zoom]");
+  const zoomPick = zoom?.querySelector("[data-zoom-pick]");
+  let zoomInput = null;
+  const largeOf = (src) => src.replace("assets/vote/", "assets/vote/large/");
+  const openZoom = (c, input) => {
+    if (!zoom || typeof zoom.showModal !== "function") return;
+    zoomInput = input || null;
+    const img = zoom.querySelector("[data-zoom-img]");
+    img.src = c.image ? largeOf(c.image) : logos[c.store] || "assets/logo-gog.webp";
+    img.alt = c.name;
+    zoom.querySelector("[data-zoom-meta]").textContent = [c.store, c.period].filter(Boolean).join("　");
+    zoom.querySelector("[data-zoom-name]").textContent = c.name;
+    const canPick = !!input && !input.disabled;
+    zoomPick.hidden = !canPick;
+    zoomPick.disabled = !!input?.checked;
+    zoomPick.textContent = input?.checked ? "選択中です" : "この商品を選ぶ";
+    zoom.showModal();
+  };
+  if (zoom) {
+    zoom.querySelectorAll("[data-zoom-close]").forEach((b) => b.addEventListener("click", () => zoom.close()));
+    // 画像の外側（暗い部分）を押しても閉じる
+    zoom.addEventListener("click", (e) => { if (e.target === zoom) zoom.close(); });
+    zoomPick.addEventListener("click", () => {
+      if (zoomInput && !zoomInput.disabled) {
+        zoomInput.checked = true;
+        zoomInput.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      zoom.close();
+    });
+  }
+  const zoomButton = (c, input, cls) => {
+    const b = el("button", cls);
+    b.type = "button";
+    b.setAttribute("aria-label", `${c.name}の画像を大きく見る`);
+    const img = el("img");
+    img.src = c.image || logos[c.store] || "assets/logo-gog.webp";
+    img.alt = "";
+    img.loading = "lazy";
+    b.append(img);
+    b.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openZoom(c, input);
+    });
+    return b;
+  };
+
   // ----- 候補を描画 -----
   cfg.categories.forEach((cat) => {
     const fs = el("fieldset", "vote-cat");
@@ -95,13 +143,7 @@
           input.name = cat.id;
           input.value = c.id;
           const body = el("span", "cand-body" + (c.image ? " has-img" : ""));
-          if (c.image) {
-            const img = el("img", "cand-img");
-            img.src = c.image;
-            img.alt = "";
-            img.loading = "lazy";
-            body.append(img);
-          }
+          if (c.image) body.append(zoomButton(c, input, "cand-zoom"));
           const txt = el("span", "cand-text");
           txt.append(el("span", "cand-name", c.name));
           if (c.period) txt.append(el("span", "cand-store", c.period));
@@ -191,10 +233,7 @@
         bar.append(fill);
         const mid = el("div");
         mid.append(name, bar);
-        const thumb = el("img", "rank-img");
-        thumb.src = r.image || logos[r.store] || "assets/logo-gog.webp";
-        thumb.alt = "";
-        thumb.loading = "lazy";
+        const thumb = r.image ? zoomButton(r, null, "rank-zoom") : el("span", "rank-zoom");
         li.append(el("span", "rank-pos", String(r.pos)), thumb, mid, el("span", "rank-votes", `${r.votes}票`));
         ol.append(li);
         requestAnimationFrame(() => fill.style.setProperty("--w", max ? `${(r.votes / max) * 100}%` : "0%"));
