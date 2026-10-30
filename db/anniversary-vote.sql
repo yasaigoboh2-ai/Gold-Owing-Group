@@ -16,18 +16,19 @@ create table if not exists public.anniv_votes (
   category     text not null check (category in ('food', 'drink', 'gift')),
   candidate_id text not null check (candidate_id ~ '^[a-z0-9][a-z0-9-]{0,47}$'),
   ip_hash      text,                                        -- IPそのものは保存しない
-  unique (voter_key, category)                              -- 1人につき各部門1票
+  is_test      boolean not null default false,              -- 11/1より前のテスト投票（本番とは別に集計）
+  unique (voter_key, category, is_test)                     -- 1人につき各部門1票（テストと本番は別）
 );
 
-create index if not exists anniv_votes_ip_idx on public.anniv_votes (ip_hash, category);
+create index if not exists anniv_votes_ip_idx on public.anniv_votes (ip_hash, category, is_test);
 
 alter table public.anniv_votes enable row level security;
 
 create or replace view public.anniv_vote_tally
 with (security_invoker = true) as
-  select category, candidate_id, count(*)::int as votes
+  select category, candidate_id, count(*)::int as votes, is_test
   from public.anniv_votes
-  group by category, candidate_id;
+  group by category, candidate_id, is_test;
 
 revoke all on public.anniv_votes from anon, authenticated;
 revoke all on public.anniv_vote_tally from anon, authenticated;
@@ -35,8 +36,10 @@ revoke all on public.anniv_vote_tally from anon, authenticated;
 -- ------------------------------------------------------------
 --  よく使う操作
 -- ------------------------------------------------------------
--- 集計を見る：
---   select * from public.anniv_vote_tally order by category, votes desc;
+-- 集計を見る（本番だけ）：
+--   select * from public.anniv_vote_tally where not is_test order by category, votes desc;
+-- テスト投票だけ消す：
+--   delete from public.anniv_votes where is_test;
 -- 投票した人の一覧：
 --   select created_at, voter_name, category, candidate_id from public.anniv_votes order by created_at;
 -- 他人の名前で投票されていた等、1件を取り消す（名前で指定）：

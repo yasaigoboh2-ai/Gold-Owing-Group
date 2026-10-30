@@ -1,6 +1,7 @@
 // GOG 1周年 人気投票（Supabase Edge Function: anniv-vote）
 //   GET  /functions/v1/anniv-vote  … 集計 { ok, phase, tallies: [{ category, candidate_id, votes }] }
 //   POST /functions/v1/anniv-vote  … { code, redirect_uri, food, drink, gift } で投票
+//   ?test=1（GET）/ test:true（POST）… テスト投票。11/1 0:00 より前だけ受け付け、本番の票とは別に保存・集計する
 //
 // 1人1回：Discordで本人確認し、Discordアカウント1つにつき各部門1票。
 //   HP → Discordの認可画面 → HPに code が戻る → この窓口が code を Discord に渡して本人を確認 → 記録
@@ -12,6 +13,8 @@
 const VOTE_START = Date.parse("2026-11-01T00:00:00+09:00");
 const VOTE_END = Date.parse("2026-11-08T00:00:00+09:00"); // 11/7 23:59 まで
 const FORCE_OPEN = false; // 動作テストのときだけ true にしてデプロイ
+// テスト投票：本番開始までの間だけ受け付ける（本番の集計・1人1回には影響しない）
+const TEST_UNTIL = VOTE_START;
 
 // Discord アプリの Client ID（公開してよい値）。js/anniv-data.js と同じにする
 const DISCORD_CLIENT_ID = "1565500993578336306";
@@ -125,20 +128,32 @@ export async function handle(req: Request): Promise<Response> {
 
   const now = Date.now();
   const phase = FORCE_OPEN ? "open" : now < VOTE_START ? "before" : now < VOTE_END ? "open" : "closed";
+  const testOpen = now < TEST_UNTIL;
 
   try {
     // ----- 集計 -----
     if (req.method === "GET") {
-      if (phase === "before") return json(200, { ok: true, phase, tallies: [] });
-      const r = await fetch(`${rest}/anniv_vote_tally?select=category,candidate_id,votes`, { headers: db });
+      const isTest = new URL(req.url).searchParams.has("test");
+      if (isTest ? !testOpen : phase === "before") return json(200, { ok: true, phase: isTest ? "test-closed" : phase, tallies: [] });
+      const r = await fetch(`${rest}/anniv_vote_tally?select=category,candidate_id,votes&is_test=eq.${isTest}`, { headers: db });
       if (!r.ok) throw new Error(`tally ${r.status} ${await r.text()}`);
-      return json(200, { ok: true, phase, tallies: await r.json() }, { "Cache-Control": "public, max-age=20" });
+      return json(200, { ok: true, phase: isTest ? "test" : phase, tallies: await r.json() }, { "Cache-Control": "public, max-age=20" });
     }
 
     if (req.method !== "POST") return json(405, { ok: false, message: "Method Not Allowed" }, { Allow: "GET, POST" });
 
     // ----- 投票 -----
-    if (phase !== "open") {
+    let body: Record<string, unknown>;
+    try {
+      body = await req.json();
+    } catch {
+      return json(400, { ok: false, message: "送信内容を読み取れませんでした。" });
+    }
+    const isTest = body.test === true;
+    if (isTest && !testOpen) {
+      return json(403, { ok: false, message: "テスト投票は終了しました。本番の投票ページから投票してください。" });
+    }
+    if (!isTest && phase !== "open") {
       return json(403, {
         ok: false,
         message: phase === "before" ? "投票は11月1日から始まります。" : "投票は締め切りました。",
@@ -146,13 +161,6 @@ export async function handle(req: Request): Promise<Response> {
     }
     if (!DISCORD_CLIENT_ID || !Deno.env.get("DISCORD_CLIENT_SECRET")) {
       return json(503, { ok: false, message: "投票の準備中です。時間をおいてお試しください。" });
-    }
-
-    let body: Record<string, unknown>;
-    try {
-      body = await req.json();
-    } catch {
-      return json(400, { ok: false, message: "送信内容を読み取れませんでした。" });
     }
 
     const picks = CATEGORIES.map((c) => [c, String(body[c] ?? "")] as const);
@@ -183,7 +191,7 @@ export async function handle(req: Request): Promise<Response> {
 
     // 同じ回線から、別のDiscordアカウントでの投票が多すぎないか
     const c = await fetch(
-      `${rest}/anniv_votes?select=voter_key&category=eq.food&ip_hash=eq.${ipHash}&voter_key=neq.${encodeURIComponent(voterKey)}&limit=${MAX_PER_IP}`,
+      `${rest}/anniv_votes?select=voter_key&category=eq.food&is_test=eq.${isTest}&ip_hash=eq.${ipHash}&voter_key=neq.${encodeURIComponent(voterKey)}&limit=${MAX_PER_IP}`,
       { headers: db },
     );
     if (!c.ok) throw new Error(`count ${c.status} ${await c.text()}`);
@@ -197,16 +205,19 @@ export async function handle(req: Request): Promise<Response> {
       category,
       candidate_id,
       ip_hash: ipHash,
+      is_test: isTest,
     }));
     const r = await fetch(`${rest}/anniv_votes`, {
       method: "POST",
       headers: { ...db, Prefer: "return=minimal" },
       body: JSON.stringify(rows),
     });
-    if (r.status === 409) return json(409, { ok: false, message: "このDiscordアカウントはすでに投票済みです。" });
+    if (r.status === 409) {
+      return json(409, { ok: false, message: isTest ? "このDiscordアカウントはすでにテスト投票済みです。" : "このDiscordアカウントはすでに投票済みです。" });
+    }
     if (!r.ok) throw new Error(`insert ${r.status} ${await r.text()}`);
 
-    return json(200, { ok: true, name: rows[0].voter_name });
+    return json(200, { ok: true, test: isTest, name: rows[0].voter_name });
   } catch (err) {
     console.error("anniv-vote:", err);
     return json(500, { ok: false, message: "投票を受け付けられませんでした。時間をおいてもう一度お試しください。" });

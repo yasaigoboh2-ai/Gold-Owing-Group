@@ -7,14 +7,16 @@
   const params = new URLSearchParams(location.search);
   const sample = params.has("sample");
   const PENDING_KEY = "gog_anniv_vote_pending";
-  // ?test=1：見本の候補で、本物のDiscord確認〜送信まで試す（受け付けるかはサーバーが決める）
+  // ?test=1：本番の候補で、本物のDiscord確認〜送信まで試すテスト投票。
+  //   本番開始（cfg.start）より前だけ有効。票は本番とは別に保存・集計される（サーバー側で区別）
   let pendingTest = false;
   try { pendingTest = params.has("code") && !!JSON.parse(sessionStorage.getItem(PENDING_KEY) || "null")?.test; } catch {}
-  const test = params.has("test") || pendingTest;
-  const candidates = sample || test ? window.GOG_ANNIV_SAMPLE || [] : cfg.candidates || [];
+  const test = (params.has("test") || pendingTest) && Date.now() < Date.parse(cfg.start);
+  const candidates = sample ? window.GOG_ANNIV_SAMPLE || [] : cfg.candidates || [];
   const logos = window.GOG_ANNIV.storeLogos || {};
   const VOTED_KEY = test ? "gog_anniv_vote_test" : "gog_anniv_vote_2026";
   const API = cfg.api || "/api/vote";
+  const RESULTS_API = test ? `${API}?test=1` : API;
   // Discordから戻ってくるURL（Discordのアプリ設定にも同じものを登録する）
   const REDIRECT_URI = location.origin + location.pathname.replace(/index\.html$/, "");
 
@@ -201,10 +203,11 @@
   const picked = $("[data-vote-picked]");
   const showPicked = () => {
     if (!picked) return;
-    const fd = new FormData(root);
     picked.textContent = "";
     cfg.categories.forEach((cat, i) => {
-      const c = candidates.find((x) => x.id === fd.get(cat.id));
+      // 投票後は選択肢が無効になり FormData に入らないので、チェック状態を直接見る
+      const id = root.querySelector(`input[name="${cat.id}"]:checked`)?.value;
+      const c = candidates.find((x) => x.id === id);
       if (i) picked.append("　");
       picked.append(`${cat.label.replace("部門", "")}：`);
       picked.append(el("b", null, c ? plain(c.name) : "未選択"));
@@ -223,6 +226,9 @@
 
     showPicked();
     if (phase === "before") state.textContent = `投票は${fmt(start, true)}から始まります`;
+    else if (test) state.textContent = voted
+      ? "テスト投票ありがとうございました（本番の集計には入りません）"
+      : `テスト投票中です。本番の集計には入りません（${fmt(start - 60e3, true)}まで）`;
     else if (phase === "open" && voted) state.textContent = "投票ありがとうございました。結果発表をお待ちください";
     else if (phase === "open") state.textContent = `投票受付中です（${fmt(end - 60e3, true)}まで）`;
     else state.textContent = "投票は締め切りました。結果は下のとおりです";
@@ -237,9 +243,10 @@
   const renderResults = (tallies, phase) => {
     const grid = $("[data-results-grid]");
     grid.textContent = "";
-    $("[data-results-title]").textContent = phase === "closed" ? "投票結果" : "途中経過";
-    $("[data-results-sub]").textContent =
-      phase === "closed" ? `1位の商品を${cfg.resale}に再販売します` : "1分ごとに更新されます";
+    $("[data-results-title]").textContent = test ? "テスト投票の集計" : phase === "closed" ? "投票結果" : "途中経過";
+    $("[data-results-sub]").textContent = test
+      ? "テスト用の集計です。本番の結果とは別です"
+      : phase === "closed" ? `1位の商品を${cfg.resale}に再販売します` : "1分ごとに更新されます";
 
     cfg.categories.forEach((cat) => {
       const rows = candidates
@@ -299,7 +306,7 @@
     }
     if (sample) return renderResults(sampleTallies(), phase);
     try {
-      const res = await fetch(API, { headers: { Accept: "application/json" } });
+      const res = await fetch(RESULTS_API, { headers: { Accept: "application/json" } });
       const j = await res.json();
       if (!res.ok || !j.ok) throw new Error(j?.message || res.status);
       renderResults(j.tallies || [], phase);
@@ -379,7 +386,7 @@
       const res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code, redirect_uri: REDIRECT_URI, ...p.picks }),
+        body: JSON.stringify({ code, redirect_uri: REDIRECT_URI, ...p.picks, ...(p.test ? { test: true } : {}) }),
       });
       let j = {};
       try { j = await res.json(); } catch {}
@@ -387,7 +394,7 @@
       if (res.ok && j.ok) {
         storage.set();
         msg.className = "vote-msg is-ok";
-        msg.textContent = "投票しました。ありがとうございます。";
+        msg.textContent = p.test ? "テスト投票しました。ありがとうございます。" : "投票しました。ありがとうございます。";
         loadResults();
         return;
       }
