@@ -13,10 +13,10 @@ create table if not exists public.anniv_votes (
   created_at   timestamptz not null default now(),
   voter_name   text not null check (char_length(voter_name) between 1 and 32),
   voter_key    text not null,                               -- 名前の表記ゆれ対策（小文字化）
-  category     text not null check (category in ('food', 'drink')),
+  category     text not null check (category in ('food', 'drink', 'gift')),
   candidate_id text not null check (candidate_id ~ '^[a-z0-9][a-z0-9-]{0,47}$'),
   ip_hash      text,                                        -- IPそのものは保存しない
-  unique (voter_key, category)                              -- 1キャラ名につき各部門1票
+  unique (voter_key, category)                              -- 1人につき各部門1票
 );
 
 create index if not exists anniv_votes_ip_idx on public.anniv_votes (ip_hash, category);

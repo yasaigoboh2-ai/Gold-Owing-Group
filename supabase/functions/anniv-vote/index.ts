@@ -1,6 +1,6 @@
 // GOG 1周年 人気投票（Supabase Edge Function: anniv-vote）
 //   GET  /functions/v1/anniv-vote  … 集計 { ok, phase, tallies: [{ category, candidate_id, votes }] }
-//   POST /functions/v1/anniv-vote  … { code, redirect_uri, food, drink } で投票
+//   POST /functions/v1/anniv-vote  … { code, redirect_uri, food, drink, gift } で投票
 //
 // 1人1回：Discordで本人確認し、Discordアカウント1つにつき各部門1票。
 //   HP → Discordの認可画面 → HPに code が戻る → この窓口が code を Discord に渡して本人を確認 → 記録
@@ -23,7 +23,7 @@ const REDIRECT_URIS = [
   "https://yasaigoboh2-ai.github.io/Gold-Owing-Group/",
 ];
 
-const CATEGORIES = ["food", "drink"];
+const CATEGORIES = ["food", "drink", "gift"]; // 食べ物・飲み物・Dear.630（3部門とも必須）
 const ID_RE = /^[a-z0-9][a-z0-9-]{0,47}$/;
 const MAX_PER_IP = 3; // 同じ回線から投票できるDiscordアカウント数（同居・家族向けの余裕）
 const DISCORD_API = "https://discord.com/api/v10";

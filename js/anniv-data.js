@@ -19,6 +19,7 @@ window.GOG_ANNIV = {
     categories: [
       { id: "food", label: "食べ物部門", en: "Food" },
       { id: "drink", label: "飲み物部門", en: "Drink" },
+      { id: "gift", label: "Dear.630部門", en: "Gift" },
     ],
     candidates: [
       // 候補リスト（GOG 期間限定メニュー一覧のスプレッドシートより）。画像を付けるときは image: "assets/…" を足す
@@ -67,6 +68,15 @@ window.GOG_ANNIV = {
       { id: "drink-lounge-moonhowl", category: "drink", name: "ムーンハウル|カクテル", store: "Lounge315", period: "2026.10", image: "assets/vote/drink-lounge-moonhowl.webp" },
       { id: "drink-silent-midnight-soda", category: "drink", name: "ミッドナイト|ソーダ", store: "Silent735", period: "2026.07", image: "assets/vote/drink-silent-midnight-soda.webp" },
       { id: "drink-silent-dark-enchant", category: "drink", name: "ダーク|エンチャント", store: "Silent735", period: "2026.10", image: "assets/vote/drink-silent-dark-enchant.webp" },
+      // ---- Dear.630部門 ----
+      { id: "gift-dear-cupid-rifle", category: "gift", name: "キュービッド|ライフル", store: "Dear.630", period: "半年記念・エアガン" },
+      { id: "gift-dear-kmc-box", category: "gift", name: "KMC|コラボ|ボックス", store: "Dear.630", period: "七夕イベント・ギフトボックス" },
+      { id: "gift-dear-kmc-card", category: "gift", name: "KMC|コラボ|カード", store: "Dear.630", period: "七夕イベント・メッセージカード" },
+      { id: "gift-dear-love-potion", category: "gift", name: "ラブ|ポーション", store: "Dear.630", period: "七夕イベント・投擲武器" },
+      { id: "gift-dear-surfboard", category: "gift", name: "サーフ|ボード", store: "Dear.630", period: "夏限定・背中装着アイテム" },
+      { id: "gift-dear-ice-candy", category: "gift", name: "アイス|キャンディー", store: "Dear.630", period: "夏限定・口装着アイテム" },
+      { id: "gift-dear-robot-waiter", category: "gift", name: "ロボット|ウェイター", store: "Dear.630", period: "9月限定・肩追従アイテム" },
+      { id: "gift-dear-cauldron-backpack", category: "gift", name: "コールドロン|リュック", store: "Dear.630", period: "10月限定・背中装着アイテム" },
     ],
   },
 
@@ -92,4 +102,7 @@ window.GOG_ANNIV_SAMPLE = [
   { id: "drink-moonhowl", category: "drink", name: "ムーンハウル・カクテル", store: "Lounge315" },
   { id: "drink-signature", category: "drink", name: "シグネチャーカクテル", store: "Silent735" },
   { id: "drink-whisky", category: "drink", name: "季節のウイスキー", store: "Silent735" },
+  { id: "gift-sample-1", category: "gift", name: "見本のギフトA", store: "Dear.630" },
+  { id: "gift-sample-2", category: "gift", name: "見本のギフトB", store: "Dear.630" },
+  { id: "gift-sample-3", category: "gift", name: "見本のギフトC", store: "Dear.630" },
 ];

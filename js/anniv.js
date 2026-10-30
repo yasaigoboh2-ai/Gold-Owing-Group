@@ -120,7 +120,9 @@
   };
 
   // ----- 候補を描画 -----
-  cfg.categories.forEach((cat) => {
+  // 1・2部門目（食べ物・飲み物）は左右に、3部門目以降（Dear.630）はその下に横いっぱいで並べる
+  let catsWide = null;
+  cfg.categories.forEach((cat, ci) => {
     const fs = el("fieldset", "vote-cat");
     const lg = el("legend");
     lg.append(el("b", null, cat.label), el("small", null, cat.en));
@@ -142,7 +144,7 @@
         logo.loading = "lazy";
         if (store === "Silent735") logo.style.filter = "invert(1)";
         head.append(logo, el("span", null, store));
-        group.append(head);
+        if (stores.length > 1) group.append(head);
 
         const wrap = el("div", "cands");
         list.filter((c) => c.store === store).forEach((c) => {
@@ -183,7 +185,15 @@
         fs.append(group);
       });
     }
-    cats.append(fs);
+    if (ci < 2) {
+      cats.append(fs);
+    } else {
+      if (!catsWide) {
+        catsWide = el("div", "vote-cats-wide");
+        cats.after(catsWide);
+      }
+      catsWide.append(fs);
+    }
   });
 
   // ----- 選んだ商品をボタンの上に表示（候補が多くて離れているため） -----
@@ -249,8 +259,14 @@
       });
       const box = el("div");
       box.append(el("p", "rank-cat", cat.label));
+      const shown = rows.filter((r) => r.votes > 0 && r.pos <= LIMIT);
+      if (!shown.length) {
+        box.append(el("p", "rank-empty", "まだ票が入っていません"));
+        grid.append(box);
+        return;
+      }
       const ol = el("ol", "rank");
-      rows.filter((r) => r.pos <= LIMIT).forEach((r) => {
+      shown.forEach((r) => {
         const li = el("li");
         if (r.pos === 1 && max > 0) li.classList.add("is-top");
         const name = wrapName(el("span", "rank-name"), r.name);
@@ -267,7 +283,7 @@
         requestAnimationFrame(() => fill.style.setProperty("--w", max ? `${(r.votes / max) * 100}%` : "0%"));
       });
       box.append(ol);
-      const rest = rows.filter((r) => r.pos > LIMIT).length;
+      const rest = rows.length - shown.length;
       if (rest) box.append(el("p", "rank-more", `ほか${rest}品`));
       grid.append(box);
     });
