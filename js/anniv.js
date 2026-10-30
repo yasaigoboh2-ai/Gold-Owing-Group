@@ -73,29 +73,63 @@
     if (!list.length) {
       fs.append(el("p", "cands-empty", "候補の商品は近日公開します。"));
     } else {
-      const wrap = el("div", "cands");
-      list.forEach((c) => {
-        const label = el("label", "cand");
-        const input = el("input");
-        input.type = "radio";
-        input.name = cat.id;
-        input.value = c.id;
-        const body = el("span", "cand-body");
-        const img = el("img", "cand-img");
-        img.src = c.image || logos[c.store] || "assets/logo-gog.webp";
-        img.alt = "";
-        img.loading = "lazy";
-        if (!c.image && c.store === "Silent735") img.style.filter = "invert(1)";
-        const txt = el("span");
-        txt.append(el("span", "cand-name", c.name), el("span", "cand-store", c.store));
-        body.append(img, txt, el("span", "cand-check"));
-        label.append(input, body);
-        wrap.append(label);
+      // 店舗ごとにまとめる（店の並びは storeLogos の順）
+      const order = Object.keys(logos);
+      const stores = [...new Set(list.map((c) => c.store))].sort((a, b) => order.indexOf(a) - order.indexOf(b));
+      stores.forEach((store) => {
+        const group = el("div", "cand-group");
+        const head = el("p", "cand-group-head");
+        const logo = el("img");
+        logo.src = logos[store] || "assets/logo-gog.webp";
+        logo.alt = "";
+        logo.loading = "lazy";
+        if (store === "Silent735") logo.style.filter = "invert(1)";
+        head.append(logo, el("span", null, store));
+        group.append(head);
+
+        const wrap = el("div", "cands");
+        list.filter((c) => c.store === store).forEach((c) => {
+          const label = el("label", "cand");
+          const input = el("input");
+          input.type = "radio";
+          input.name = cat.id;
+          input.value = c.id;
+          const body = el("span", "cand-body" + (c.image ? " has-img" : ""));
+          if (c.image) {
+            const img = el("img", "cand-img");
+            img.src = c.image;
+            img.alt = "";
+            img.loading = "lazy";
+            body.append(img);
+          }
+          const txt = el("span", "cand-text");
+          txt.append(el("span", "cand-name", c.name));
+          if (c.period) txt.append(el("span", "cand-store", c.period));
+          body.append(txt, el("span", "cand-check"));
+          label.append(input, body);
+          wrap.append(label);
+        });
+        group.append(wrap);
+        fs.append(group);
       });
-      fs.append(wrap);
     }
     cats.append(fs);
   });
+
+  // ----- 選んだ商品をボタンの上に表示（候補が多くて離れているため） -----
+  const picked = $("[data-vote-picked]");
+  const showPicked = () => {
+    if (!picked) return;
+    const fd = new FormData(root);
+    picked.textContent = "";
+    cfg.categories.forEach((cat, i) => {
+      const c = candidates.find((x) => x.id === fd.get(cat.id));
+      if (i) picked.append("　");
+      picked.append(`${cat.label.replace("部門", "")}：`);
+      picked.append(el("b", null, c ? c.name : "未選択"));
+    });
+  };
+  root.addEventListener("change", showPicked);
 
   // ----- 受付状態 -----
   const applyPhase = () => {
@@ -106,6 +140,7 @@
     root.querySelectorAll("input").forEach((i) => (i.disabled = !open));
     submit.disabled = !open;
 
+    showPicked();
     if (phase === "before") state.textContent = `投票は${fmt(start, true)}から始まります`;
     else if (phase === "open" && voted) state.textContent = "投票ありがとうございました。結果発表をお待ちください";
     else if (phase === "open") state.textContent = `投票受付中です（${fmt(end - 60e3, true)}まで）`;
@@ -136,28 +171,33 @@
       if (!rows.length) return;
 
       const max = rows[0].votes;
+      const LIMIT = 10; // 各部門、上位10位まで表示
+      let pos = 0;
+      rows.forEach((r, i) => {
+        if (i === 0 || r.votes !== rows[i - 1].votes) pos = i + 1;
+        r.pos = pos;
+      });
       const box = el("div");
       box.append(el("p", "rank-cat", cat.label));
       const ol = el("ol", "rank");
-      let pos = 0;
-      let prev = null;
-      rows.forEach((r, i) => {
-        if (r.votes !== prev) pos = i + 1;
-        prev = r.votes;
+      rows.filter((r) => r.pos <= LIMIT).forEach((r) => {
         const li = el("li");
-        if (pos === 1 && max > 0) li.classList.add("is-top");
+        if (r.pos === 1 && max > 0) li.classList.add("is-top");
         const name = el("span", "rank-name", r.name);
-        if (phase === "closed" && pos === 1 && max > 0) name.append(el("span", "rank-win", "再販売決定"));
+        name.append(el("small", "rank-store", r.store));
+        if (phase === "closed" && r.pos === 1 && max > 0) name.append(el("span", "rank-win", "再販売決定"));
         const bar = el("span", "rank-bar");
         const fill = el("i");
         bar.append(fill);
         const mid = el("div");
         mid.append(name, bar);
-        li.append(el("span", "rank-pos", String(pos)), mid, el("span", "rank-votes", `${r.votes}票`));
+        li.append(el("span", "rank-pos", String(r.pos)), mid, el("span", "rank-votes", `${r.votes}票`));
         ol.append(li);
         requestAnimationFrame(() => fill.style.setProperty("--w", max ? `${(r.votes / max) * 100}%` : "0%"));
       });
       box.append(ol);
+      const rest = rows.filter((r) => r.pos > LIMIT).length;
+      if (rest) box.append(el("p", "rank-more", `ほか${rest}品`));
       grid.append(box);
     });
     results.hidden = !grid.children.length;
