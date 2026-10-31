@@ -66,6 +66,29 @@ const secretKey = () => {
 
 type DiscordUser = { id: string; username?: string; global_name?: string | null };
 
+// 投票があったことを、運営だけが見られるDiscordチャンネルに知らせる（Bar105の特典確認用）
+//   Secrets の DISCORD_VOTE_WEBHOOK_URL が無ければ何もしない。何に投票したかは送らない。
+//   失敗しても投票そのものには影響させない。
+async function notifyVote(user: DiscordUser, isTest: boolean) {
+  const hook = Deno.env.get("DISCORD_VOTE_WEBHOOK_URL") || "";
+  if (!/^https:\/\/(?:ptb\.|canary\.)?discord(?:app)?\.com\/api\/webhooks\//.test(hook)) return;
+  const jst = new Date(Date.now() + 9 * 3600e3);
+  const time = `${jst.getUTCMonth() + 1}/${jst.getUTCDate()} ${jst.getUTCHours()}:${String(jst.getUTCMinutes()).padStart(2, "0")}`;
+  const name = cleanName(user.global_name || user.username) || "（名前なし）";
+  const handle = user.username ? ` / @${cleanName(user.username)}` : "";
+  const content = `${isTest ? "【テスト】" : "🗳️"} 投票がありました：<@${user.id}>（${name}${handle}）${time}`;
+  try {
+    await fetch(hook, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content, allowed_mentions: { parse: [] } }), // 通知（メンション）は飛ばさない
+      signal: AbortSignal.timeout(4000),
+    });
+  } catch (e) {
+    console.warn("vote webhook:", e);
+  }
+}
+
 // code を Discord に渡して、投票した本人の Discord アカウントを確かめる
 async function verifyDiscord(code: string, redirectUri: string): Promise<DiscordUser | null> {
   const secret = Deno.env.get("DISCORD_CLIENT_SECRET") || "";
@@ -216,6 +239,13 @@ export async function handle(req: Request): Promise<Response> {
       return json(409, { ok: false, message: isTest ? "このDiscordアカウントはすでにテスト投票済みです。" : "このDiscordアカウントはすでに投票済みです。" });
     }
     if (!r.ok) throw new Error(`insert ${r.status} ${await r.text()}`);
+
+    // 運営チャンネルへの通知は、返事を待たせないよう裏で送る
+    const note = notifyVote(user, isTest);
+    // deno-lint-ignore no-explicit-any
+    const rt = (globalThis as any).EdgeRuntime;
+    if (rt?.waitUntil) rt.waitUntil(note);
+    else await note;
 
     return json(200, { ok: true, test: isTest, name: rows[0].voter_name });
   } catch (err) {
