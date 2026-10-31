@@ -856,3 +856,43 @@ body.modal-open{ overflow:hidden; }
   .zoom[open]{ animation:none; }
   .rank-bar i{ transition:none; }
 }
+
+/* ===== Dear.630 新商品（便箋・ポチ袋） ===== */
+.dn-head{ text-align:center; margin:8px auto 40px; }
+.dn-en{ margin:0 0 6px; font-family:var(--latin); font-style:italic; color:var(--gold); letter-spacing:.08em; }
+.dn-lead{ margin:0; color:var(--muted); line-height:2; word-break:auto-phrase; text-wrap:balance; }
+.dn-group{ margin:0 0 44px; }
+.dn-title{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; padding-bottom:10px; margin-bottom:22px; border-bottom:1px solid var(--line); }
+.dn-title h4{ margin:0; font-size:24px; letter-spacing:.12em; }
+.dn-title h4 span{ margin-left:14px; font-family:var(--latin); font-style:italic; font-weight:400; font-size:15px; color:var(--gold); letter-spacing:.06em; }
+.dn-price{ margin:0; color:var(--ivory); font-size:14px; letter-spacing:.06em; white-space:nowrap; }
+.dn-price b{ margin:0 2px 0 6px; font-family:var(--latin); font-size:34px; line-height:1; color:var(--champagne); }
+.dn-items{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, 1fr); gap:clamp(12px, 2.4vw, 28px); }
+.dn-items li{ display:flex; flex-direction:column; align-items:center; gap:12px; }
+.dn-items img{ width:100%; height:auto; aspect-ratio:268/316; object-fit:contain; background:#f8f1ea; border-radius:var(--radius); padding:clamp(8px, 1.4vw, 16px); box-shadow:0 18px 40px rgba(0,0,0,.35); }
+.dn-items.is-pochi img{ aspect-ratio:182/280; max-width:220px; }
+.dn-items span{ font-size:15px; letter-spacing:.16em; }
+.dn-feats{ list-style:none; margin:24px 0 0; padding:0; display:flex; flex-wrap:wrap; justify-content:center; gap:8px 10px; }
+.dn-feats li{ font-size:13px; color:var(--champagne); border:1px solid var(--line); border-radius:999px; padding:4px 14px; background:rgba(201,164,92,.06); }
+.dn-compare{ margin-top:8px; padding-top:30px; border-top:1px solid var(--line-soft); }
+.dn-compare-title{ margin:0 0 18px; text-align:center; font-size:17px; letter-spacing:.14em; }
+.dn-tables{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+.dn-tables table{ width:100%; border-collapse:collapse; font-size:14px; table-layout:fixed; }
+.dn-tables th, .dn-tables td{ padding:10px 8px; text-align:center; border-bottom:1px solid var(--line-soft); }
+.dn-tables thead th{ font-size:12.5px; font-weight:500; color:var(--muted); letter-spacing:.06em; }
+.dn-tables thead th.is-new{ color:var(--ink); background:var(--gold); font-weight:700; border-radius:8px 8px 0 0; }
+.dn-tables tbody th{ font-weight:500; color:var(--gold); white-space:nowrap; }
+.dn-tables td{ color:var(--muted); }
+.dn-tables td.is-new{ color:var(--ivory); font-weight:700; background:rgba(201,164,92,.08); }
+.arrival-card img.is-photo{ background:#f8f1ea; object-fit:cover; object-position:50% 30%; }
+.arrival-card a.soon.is-link{ text-decoration:none; }
+.arrival-card a.soon.is-link:hover{ background:rgba(201,164,92,.14); }
+@media (max-width:720px){
+  .dn-title h4{ font-size:20px; }
+  .dn-title h4 span{ display:block; margin:2px 0 0; font-size:13px; }
+  .dn-price b{ font-size:28px; }
+  .dn-items{ gap:10px; }
+  .dn-items span{ font-size:13px; letter-spacing:.08em; }
+  .dn-tables{ grid-template-columns:1fr; }
+  .dn-tables th, .dn-tables td{ padding:9px 4px; font-size:13px; }
+}
