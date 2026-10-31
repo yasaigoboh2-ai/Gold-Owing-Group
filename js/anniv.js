@@ -53,9 +53,15 @@
     if (text != null) n.textContent = text;
     return n;
   };
+  // 投票済みの記録。投票した直後は Discord の名前と時刻も残し、完了画面に出す（Bar105での受け取り確認用）
   const storage = {
     get() { try { return localStorage.getItem(VOTED_KEY); } catch { return null; } },
-    set() { try { localStorage.setItem(VOTED_KEY, "1"); } catch {} },
+    set(info) { try { localStorage.setItem(VOTED_KEY, info ? JSON.stringify(info) : "1"); } catch {} },
+    info() { try { const v = JSON.parse(storage.get() || "null"); return v && typeof v === "object" ? v : null; } catch { return null; } },
+  };
+  const receipt = () => {
+    const r = storage.info();
+    return r?.name ? `${r.name} さんの投票を受け付けました（${fmt(Number(r.at) || Date.now(), true)}）` : "";
   };
   const pending = {
     get() { try { return JSON.parse(sessionStorage.getItem(PENDING_KEY) || "null"); } catch { return null; } },
@@ -228,9 +234,9 @@
     showPicked();
     if (phase === "before") state.textContent = `投票は${fmt(start, true)}から始まります`;
     else if (test) state.textContent = voted
-      ? "テスト投票ありがとうございました（本番の集計には入りません）"
+      ? `${receipt() || "テスト投票ありがとうございました"}（テストのため本番の集計には入りません）`
       : `テスト投票中です。本番の集計には入りません（${fmt(start - 60e3, true)}まで）`;
-    else if (phase === "open" && voted) state.textContent = "投票ありがとうございました。結果発表をお待ちください";
+    else if (phase === "open" && voted) state.textContent = receipt() ? `${receipt()}。結果発表をお待ちください` : "投票ありがとうございました。結果発表をお待ちください";
     else if (phase === "open") state.textContent = `投票受付中です（${fmt(end - 60e3, true)}まで）`;
     else state.textContent = "投票は締め切りました。結果は下のとおりです";
 
@@ -393,7 +399,7 @@
       try { j = await res.json(); } catch {}
 
       if (res.ok && j.ok) {
-        storage.set();
+        storage.set({ name: String(j.name || "").slice(0, 32), at: Date.now() });
         msg.className = "vote-msg is-ok";
         msg.textContent = p.test ? "テスト投票しました。ありがとうございます。" : "投票しました。ありがとうございます。";
         loadResults();
